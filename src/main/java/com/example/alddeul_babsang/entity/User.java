@@ -28,7 +28,7 @@ public class User {
     private List<Review> reviewList = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Like> likeList = new ArrayList<>();
+    private List<Favorite> favoriteList = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Report> reportList = new ArrayList<>();
