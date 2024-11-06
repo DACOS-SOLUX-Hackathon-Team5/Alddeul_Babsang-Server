@@ -5,6 +5,7 @@ import com.example.alddeul_babsang.apiPayload.exception.handler.TempHandler;
 import com.example.alddeul_babsang.converter.StoreConverter;
 import com.example.alddeul_babsang.entity.Menu;
 import com.example.alddeul_babsang.entity.Store;
+import com.example.alddeul_babsang.entity.enums.Status;
 import com.example.alddeul_babsang.repository.StoreRepository;
 import com.example.alddeul_babsang.web.dto.StoreDTO;
 import lombok.AllArgsConstructor;
@@ -21,8 +22,13 @@ public class MapService {
 
     // 착한 업소 리스트 조회
     public List<StoreDTO.MapStore> getMapStoreList() {
-        List<Store> stores = storeRepository.findAll();
-        // 예비밥상 조회
+
+        // 예비밥상
+        // 반영 기능
+        // 넣기
+
+        // 착한 업소만 조회
+        List<Store> stores = storeRepository.findAllByStatus(Status.Good);
 
         return stores.stream()
                 .map(StoreConverter::toMapStore)

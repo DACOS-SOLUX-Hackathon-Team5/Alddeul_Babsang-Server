@@ -54,7 +54,6 @@ public class StoreConverter {
         StoreDTO.MenuInfo menu1 = toMenuInfo(menu.getName1(), menu.getPrice1());
         StoreDTO.MenuInfo menu2 = toMenuInfo(menu.getName2(), menu.getPrice2());
 
-        // 리뷰 정보
         return StoreDTO.StoreDetail.builder()
                 .storeInfo(storeInfo)
                 .menu1(menu1)

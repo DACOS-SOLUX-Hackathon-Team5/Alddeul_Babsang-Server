@@ -32,7 +32,7 @@ public class StoreService {
     public StoreDTO.StoreDetail getStoreInfoDetail(Long storeId) {
         Store store = storeRepository.findById(storeId).orElse(null);
         Menu menu = store.getMenu();
-        // 리뷰 넣어야 함
+
         return StoreConverter.toStoreDetail(store, menu);
     }
 }
