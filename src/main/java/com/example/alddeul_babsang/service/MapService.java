@@ -19,7 +19,7 @@ public class MapService {
     private final StoreRepository storeRepository;
 
     // 지도용 착한 업소 리스트 조회
-    public List<StoreDTO.MapStore> getStoreList() {
+    public List<StoreDTO.MapStore> getMapStoreList() {
         List<Store> stores = storeRepository.findAll();
         // 예비밥상 조회
 

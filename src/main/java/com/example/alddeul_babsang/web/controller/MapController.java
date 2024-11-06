@@ -2,6 +2,7 @@ package com.example.alddeul_babsang.web.controller;
 
 import com.example.alddeul_babsang.apiPayload.ApiResponse;
 import com.example.alddeul_babsang.service.MapService;
+import com.example.alddeul_babsang.service.StoreService;
 import com.example.alddeul_babsang.web.dto.StoreDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
@@ -23,7 +24,7 @@ public class MapController {
     @GetMapping("/stores")
     @Operation(summary = "지도 - 착한밥상리스트 API", description = "어쩌구")
     public ApiResponse<List<StoreDTO.MapStore>> getMapStores() {
-        return ApiResponse.onSuccess(mapService.getStoreList());
+        return ApiResponse.onSuccess(mapService.getMapStoreList());
     }
 
     // 특정 착한 업소 정보 조회
