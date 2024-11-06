@@ -3,6 +3,7 @@ package com.example.alddeul_babsang.entity;
 import com.example.alddeul_babsang.entity.enums.Status;
 import com.example.alddeul_babsang.entity.enums.Category;
 import jakarta.persistence.*;
+import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
@@ -10,16 +11,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Getter
 public class Store {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     private String name;
 
     private String address;
-
-    private String region;
 
     private double latitude;
 
