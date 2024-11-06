@@ -1,6 +1,7 @@
 package com.example.alddeul_babsang.service;
 
 import com.example.alddeul_babsang.converter.StoreConverter;
+import com.example.alddeul_babsang.entity.Menu;
 import com.example.alddeul_babsang.entity.Store;
 import com.example.alddeul_babsang.entity.enums.Status;
 import com.example.alddeul_babsang.repository.StoreRepository;
@@ -17,7 +18,7 @@ public class StoreService {
 
     private StoreRepository storeRepository;
 
-    // 착한 업소 리스트 조회
+    // 업소 리스트 조회
     public List<StoreDTO.StoreInfo> getStoreList(Status status) {
         // 업소 status에 따라 처리
         List<Store> stores = storeRepository.findAllByStatus(status);
@@ -25,5 +26,13 @@ public class StoreService {
         return stores.stream()
                 .map(StoreConverter::toStoreInfo)
                 .collect(Collectors.toList());
+    }
+
+    // 업소 상세 조회
+    public StoreDTO.StoreDetail getStoreInfoDetail(Long storeId) {
+        Store store = storeRepository.findById(storeId).orElse(null);
+        Menu menu = store.getMenu();
+        // 리뷰 넣어야 함
+        return StoreConverter.toStoreDetail(store, menu);
     }
 }

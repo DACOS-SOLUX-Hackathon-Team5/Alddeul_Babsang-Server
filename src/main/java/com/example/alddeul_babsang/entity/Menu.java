@@ -1,11 +1,13 @@
 package com.example.alddeul_babsang.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
 
 @Entity
+@Getter
 public class Menu {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

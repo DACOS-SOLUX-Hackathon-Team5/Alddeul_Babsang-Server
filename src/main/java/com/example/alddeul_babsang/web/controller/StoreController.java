@@ -25,18 +25,18 @@ public class StoreController {
 
     private final StoreService storeService;
 
-    // 착한 업소 리스트 조회
+    // 업소 리스트 조회
     @GetMapping("/stores")
-    @Operation(summary = "지도 - 착한밥상리스트 API", description = "어쩌구")
+    @Operation(summary = "업소 리스트 API", description = "착한 업소만 조회합니다.")
     public ApiResponse<List<StoreDTO.StoreInfo>> getStores() {
         // Status.Good: 착한 업소
         return ApiResponse.onSuccess(storeService.getStoreList(Status.Good));
     }
 
-//    // 특정 착한 업소 상세 조회
-//    @GetMapping("/stores/{id}")
-//    @Operation(summary = "지도 - 착한밥상리스트 API", description = "어쩌구")
-//    public ApiResponse<StoreDTO.StoreInfo> getMapStore(@PathVariable int id) {
-//        return ApiResponse.onSuccess(mapService.getStore(id));
-//    }
+    // 업소 상세 조회
+    @GetMapping("/stores/{id}")
+    @Operation(summary = "업소 상세 조회", description = "store id 입력 - 착한/제보 업소 가능")
+    public ApiResponse<StoreDTO.StoreDetail> getStoreDetail(@PathVariable Long id) {
+        return ApiResponse.onSuccess(storeService.getStoreInfoDetail(id));
+    }
 }

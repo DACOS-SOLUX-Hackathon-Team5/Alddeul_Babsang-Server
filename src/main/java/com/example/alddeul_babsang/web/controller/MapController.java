@@ -20,17 +20,17 @@ public class MapController {
 
     private final MapService mapService;
 
-    // 지도용 착한 업소 리스트 조회
+    // 착한 업소 리스트 조회
     @GetMapping("/stores")
-    @Operation(summary = "지도 - 착한밥상리스트 API", description = "어쩌구")
+    @Operation(summary = "지도 - 착한 업소 리스트 API", description = "어쩌구")
     public ApiResponse<List<StoreDTO.MapStore>> getMapStores() {
         return ApiResponse.onSuccess(mapService.getMapStoreList());
     }
 
-    // 특정 착한 업소 정보 조회
+    // 착한 업소 정보 조회
     @GetMapping("/stores/{id}")
-    @Operation(summary = "지도 - 착한밥상리스트 API", description = "어쩌구")
-    public ApiResponse<StoreDTO.StoreInfo> getMapStore(@PathVariable int id) {
+    @Operation(summary = "지도 - 착한 업소 정보 API", description = "어쩌구")
+    public ApiResponse<StoreDTO.StoreInfo> getMapStore(@PathVariable Long id) {
         return ApiResponse.onSuccess(mapService.getStore(id));
     }
 }
