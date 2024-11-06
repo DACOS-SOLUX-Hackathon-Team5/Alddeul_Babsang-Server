@@ -21,6 +21,7 @@ public class MapService {
     // 지도용 착한 업소 리스트 조회
     public List<StoreDTO.MapStore> getStoreList() {
         List<Store> stores = storeRepository.findAll();
+        // 예비밥상 조회
 
         return stores.stream()
                 .map(StoreConverter::toMapStore)
