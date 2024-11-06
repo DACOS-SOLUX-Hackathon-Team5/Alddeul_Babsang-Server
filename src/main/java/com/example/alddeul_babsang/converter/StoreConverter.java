@@ -1,11 +1,12 @@
 package com.example.alddeul_babsang.converter;
 
+import com.example.alddeul_babsang.entity.Menu;
 import com.example.alddeul_babsang.entity.Store;
 import com.example.alddeul_babsang.web.dto.StoreDTO;
 
 public class StoreConverter {
 
-    // 위도-경도가 있는 업소 정보 형식으로 매칭
+    // 위도-경도가 있는 업소 정보 형식으로 매핑
     public static StoreDTO.MapStore toMapStore(Store store) {
         return StoreDTO.MapStore.builder()
                 .storeId(store.getId())
@@ -31,7 +32,7 @@ public class StoreConverter {
         return "알 수 없음"; // 잘못된 주소 경로일 경우
     }
 
-    // 업소 정보 형식으로 매칭
+    // 업소 정보 형식으로 매핑
     public static StoreDTO.StoreInfo toStoreInfo(Store store) {
         return StoreDTO.StoreInfo.builder()
                 .name(store.getName())
@@ -42,5 +43,27 @@ public class StoreConverter {
                 // 유저 id에 따라 좋아요 기능 반영해야 함
                 // .isFavorite()
                 .build();
+    }
+
+    // 업소 상세 정보 형식으로 매핑
+    public static StoreDTO.StoreDetail toStoreDetail(Store store, Menu menu) {
+        // 업소 기본 정보
+        StoreDTO.StoreInfo storeInfo = toStoreInfo(store);
+
+        // 메뉴 정보
+        StoreDTO.MenuInfo menu1 = toMenuInfo(menu.getName1(), menu.getPrice1());
+        StoreDTO.MenuInfo menu2 = toMenuInfo(menu.getName2(), menu.getPrice2());
+
+        return StoreDTO.StoreDetail.builder()
+                .storeInfo(storeInfo)
+                .menu1(menu1)
+                .menu2(menu2)
+                .build();
+    }
+
+    // 메뉴 정보 형식으로
+    public static StoreDTO.MenuInfo toMenuInfo(String menuName, int menuPrice) {
+        return StoreDTO.MenuInfo.builder()
+                .name(menuName).price(menuPrice).build();
     }
 }
