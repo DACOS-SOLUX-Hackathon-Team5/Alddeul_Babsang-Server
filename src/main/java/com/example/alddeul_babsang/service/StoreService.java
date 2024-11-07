@@ -1,10 +1,14 @@
 package com.example.alddeul_babsang.service;
 
+import com.example.alddeul_babsang.apiPayload.code.status.ErrorStatus;
+import com.example.alddeul_babsang.apiPayload.exception.handler.TempHandler;
 import com.example.alddeul_babsang.converter.StoreConverter;
 import com.example.alddeul_babsang.entity.Menu;
+import com.example.alddeul_babsang.entity.Review;
 import com.example.alddeul_babsang.entity.Store;
 import com.example.alddeul_babsang.entity.enums.Status;
 import com.example.alddeul_babsang.repository.StoreRepository;
+import com.example.alddeul_babsang.web.dto.ReviewDTO;
 import com.example.alddeul_babsang.web.dto.StoreDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,9 +34,23 @@ public class StoreService {
 
     // 업소 상세 조회
     public StoreDTO.StoreDetail getStoreInfoDetail(Long storeId) {
-        Store store = storeRepository.findById(storeId).orElse(null);
-        Menu menu = store.getMenu();
+        // store id 조회 -> 예외 처리
+        Store store = storeRepository.findById(storeId)
+                .orElseThrow(() -> new TempHandler(ErrorStatus.STORE_ERROR_ID));
 
+        // store 메뉴 조회
+        Menu menu = store.getMenu();
         return StoreConverter.toStoreDetail(store, menu);
+    }
+
+    // 업소 리뷰 조회
+    public ReviewDTO.StoreReviews getReviewList(Long storeId) {
+        // store id 조회 -> 예외 처리
+        Store store = storeRepository.findById(storeId)
+                .orElseThrow(() -> new TempHandler(ErrorStatus.STORE_ERROR_ID));
+
+        // store 리뷰 조회
+        List<Review> reviews = store.getReviewList();
+        return StoreConverter.toStoreReviews(reviews);
     }
 }

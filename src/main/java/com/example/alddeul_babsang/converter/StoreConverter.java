@@ -1,8 +1,13 @@
 package com.example.alddeul_babsang.converter;
 
 import com.example.alddeul_babsang.entity.Menu;
+import com.example.alddeul_babsang.entity.Review;
 import com.example.alddeul_babsang.entity.Store;
+import com.example.alddeul_babsang.web.dto.ReviewDTO;
 import com.example.alddeul_babsang.web.dto.StoreDTO;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class StoreConverter {
 
@@ -65,5 +70,21 @@ public class StoreConverter {
     public static StoreDTO.MenuInfo toMenuInfo(String menuName, int menuPrice) {
         return StoreDTO.MenuInfo.builder()
                 .name(menuName).price(menuPrice).build();
+    }
+
+    // 업소 모든 리뷰 형식으로
+    public static ReviewDTO.StoreReviews toStoreReviews(List<Review> reviews) {
+        List<ReviewDTO.StoreReview> reviewList = reviews.stream()
+                .map(review -> ReviewDTO.StoreReview.builder()
+                        .nickname(review.getUser().getNickname())
+                        .rate(review.getStar_rating())
+                        .content(review.getContent())
+                        .build())
+                .collect(Collectors.toList());
+
+        return ReviewDTO.StoreReviews.builder()
+                .reviewCnt(reviews.size())
+                .reviewList(reviewList)
+                .build();
     }
 }

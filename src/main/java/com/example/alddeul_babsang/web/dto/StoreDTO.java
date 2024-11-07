@@ -38,10 +38,6 @@ public class StoreDTO {
         private final StoreInfo storeInfo;
         private final MenuInfo menu1; // 대표메뉴 1
         private final MenuInfo menu2; // 대표메뉴 2
-
-        // 리뷰 리스트
-        // reviewDTO 반영할 것
-
     }
 
     // 메뉴 정보

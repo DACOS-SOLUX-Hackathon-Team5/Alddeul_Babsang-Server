@@ -3,6 +3,7 @@ package com.example.alddeul_babsang.web.controller;
 import com.example.alddeul_babsang.apiPayload.ApiResponse;
 import com.example.alddeul_babsang.entity.enums.Status;
 import com.example.alddeul_babsang.service.StoreService;
+import com.example.alddeul_babsang.web.dto.ReviewDTO;
 import com.example.alddeul_babsang.web.dto.StoreDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
@@ -37,8 +38,8 @@ public class StoreController {
 
     // 업소 리뷰 조회
     @GetMapping("/{id}/reviews")
-    @Operation(summary = "업소 상세 조회", description = "store id 입력 - 착한/제보 업소 가능")
-    public ApiResponse<Integer> getStoreReviews(@PathVariable Long id) {
-        return ApiResponse.onSuccess(null);
+    @Operation(summary = "업소 리뷰 조회", description = "store id 입력 - 착한/제보 업소 가능")
+    public ApiResponse<ReviewDTO.StoreReviews> getStoreReviews(@PathVariable Long id) {
+        return ApiResponse.onSuccess(storeService.getReviewList(id));
     }
 }
