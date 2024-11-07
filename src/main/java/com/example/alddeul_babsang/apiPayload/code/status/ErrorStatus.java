@@ -15,6 +15,7 @@ public enum ErrorStatus implements BaseErrorCode {
     _UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "COMMON401", "인증이 필요합니다."),
     _FORBIDDEN(HttpStatus.FORBIDDEN, "COMMON403", "금지된 요청입니다."),
 
+    USER_ERROR_ID(HttpStatus.FORBIDDEN, "USER4001", "존재하지 않은 user id 입니다."),
     STORE_ERROR_ID(HttpStatus.FORBIDDEN, "STORE4001", "존재하지 않은 store id 입니다.");
 
     private final HttpStatus httpStatus;
