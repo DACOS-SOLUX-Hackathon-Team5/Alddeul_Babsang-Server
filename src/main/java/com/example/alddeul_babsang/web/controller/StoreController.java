@@ -25,7 +25,7 @@ public class StoreController {
     @Operation(summary = "업소 리스트 API", description = "착한 업소만 조회합니다.")
     public ApiResponse<List<StoreDTO.StoreInfo>> getStores() {
         // Status.Good: 착한 업소
-        return ApiResponse.onSuccess(storeService.getStoreList(Status.Good));
+        return ApiResponse.onSuccess(storeService.getStoreList(Status.GOOD));
     }
 
     // 업소 상세 조회

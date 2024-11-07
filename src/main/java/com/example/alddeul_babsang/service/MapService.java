@@ -28,7 +28,7 @@ public class MapService {
         // 넣기
 
         // 착한 업소만 조회
-        List<Store> stores = storeRepository.findAllByStatus(Status.Good);
+        List<Store> stores = storeRepository.findAllByStatus(Status.GOOD);
 
         return stores.stream()
                 .map(StoreConverter::toMapStore)

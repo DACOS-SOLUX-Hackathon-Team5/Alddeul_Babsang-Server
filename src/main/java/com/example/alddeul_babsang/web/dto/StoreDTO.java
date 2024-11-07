@@ -51,4 +51,20 @@ public class StoreDTO {
         private final String name;   // 이름
         private final Integer price; // 가격
     }
+
+    // 제보 업소 등록 요청 정보
+    @Getter
+    @Builder
+    public static class StoreReport {
+        private final String name;       // 업소 이름
+        private final Category category; // 업종
+        private final String address;    // 주소
+        private final String contact;    // 연락처
+        private final String menuName1;  // 대표메뉴1
+        private final Integer menuPrice1;
+        private final String menuName2;  // 대표메뉴2
+        private final Integer menuPrice2;
+//        멀티 파트로 바꿀 것
+//        private final String imageUrl;   // 이미지 주소
+    }
 }

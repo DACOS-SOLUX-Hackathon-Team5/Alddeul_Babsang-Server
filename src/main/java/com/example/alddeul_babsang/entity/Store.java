@@ -4,6 +4,7 @@ import com.example.alddeul_babsang.entity.enums.Status;
 import com.example.alddeul_babsang.entity.enums.Category;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @Entity
 @Getter
+@Setter
 public class Store {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

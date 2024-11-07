@@ -2,6 +2,7 @@ package com.example.alddeul_babsang.converter;
 
 import com.example.alddeul_babsang.entity.Menu;
 import com.example.alddeul_babsang.entity.Store;
+import com.example.alddeul_babsang.entity.enums.Status;
 import com.example.alddeul_babsang.web.dto.StoreDTO;
 
 public class StoreConverter {
@@ -65,5 +66,32 @@ public class StoreConverter {
     public static StoreDTO.MenuInfo toMenuInfo(String menuName, int menuPrice) {
         return StoreDTO.MenuInfo.builder()
                 .name(menuName).price(menuPrice).build();
+    }
+
+    // Store 엔티티 형식으로
+    public static Store toStoreEntity(StoreDTO.StoreReport report, double latitude, double longitude) {
+        Store storeEntity = new Store();
+
+        storeEntity.setName(report.getName());
+        storeEntity.setCategory(report.getCategory());
+        storeEntity.setAddress(report.getAddress());
+        storeEntity.setContact(report.getContact());
+        storeEntity.setLatitude(latitude);
+        storeEntity.setLongitude(longitude);
+        storeEntity.setStatus(Status.PREGOOD);
+
+        return storeEntity;
+    }
+
+    // StoreReport DTO -> Menu 엔티티 변환
+    public static Menu toMenuEntity(StoreDTO.StoreReport report) {
+        Menu menu = new Menu();
+
+        menu.setName1(report.getMenuName1());
+        menu.setPrice1(report.getMenuPrice1());
+        menu.setName2(report.getMenuName2());
+        menu.setPrice2(report.getMenuPrice2());
+
+        return menu;
     }
 }
