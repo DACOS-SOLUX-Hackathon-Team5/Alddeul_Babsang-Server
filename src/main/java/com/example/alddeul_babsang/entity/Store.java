@@ -3,12 +3,14 @@ package com.example.alddeul_babsang.entity;
 import com.example.alddeul_babsang.entity.enums.Status;
 import com.example.alddeul_babsang.entity.enums.Category;
 import jakarta.persistence.*;
+import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
 @Entity
 public class Store {
     @Id
