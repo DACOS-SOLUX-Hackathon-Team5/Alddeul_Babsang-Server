@@ -2,16 +2,26 @@ package com.example.alddeul_babsang.service;
 
 import com.example.alddeul_babsang.apiPayload.code.status.ErrorStatus;
 import com.example.alddeul_babsang.apiPayload.exception.handler.TempHandler;
+import com.example.alddeul_babsang.converter.MapConverter;
 import com.example.alddeul_babsang.converter.StoreConverter;
 import com.example.alddeul_babsang.entity.Menu;
 import com.example.alddeul_babsang.entity.Store;
 import com.example.alddeul_babsang.entity.enums.Status;
 import com.example.alddeul_babsang.repository.StoreRepository;
 import com.example.alddeul_babsang.web.dto.StoreDTO;
+import com.jayway.jsonpath.JsonPath;
+import com.jayway.jsonpath.PathNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service

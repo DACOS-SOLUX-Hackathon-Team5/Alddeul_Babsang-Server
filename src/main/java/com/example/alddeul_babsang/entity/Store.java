@@ -23,6 +23,8 @@ public class Store {
 
     private String address;
 
+    private String region;
+
     private double latitude;
 
     private double longitude;

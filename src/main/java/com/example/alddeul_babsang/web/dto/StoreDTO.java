@@ -67,4 +67,22 @@ public class StoreDTO {
 //        멀티 파트로 바꿀 것
 //        private final String imageUrl;   // 이미지 주소
     }
+
+    // 좌표변환 테스트
+    @Getter
+    @Builder
+    public static class CoordinatesRequest {
+        private String service; //
+        private String query;  //
+        private String select;
+        private String crs;
+    }
+
+    // 좌표변환 테스트
+    @Getter
+    @Builder
+    public static class Coordinates {
+        private String longitude; // 경도
+        private String latitude;  // 위도
+    }
 }

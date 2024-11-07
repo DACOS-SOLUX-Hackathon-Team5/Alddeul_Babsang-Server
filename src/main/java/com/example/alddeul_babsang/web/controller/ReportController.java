@@ -2,6 +2,8 @@ package com.example.alddeul_babsang.web.controller;
 
 import com.example.alddeul_babsang.apiPayload.ApiResponse;
 import com.example.alddeul_babsang.entity.enums.Status;
+import com.example.alddeul_babsang.service.CoordinatesService;
+import com.example.alddeul_babsang.service.MapService;
 import com.example.alddeul_babsang.service.StoreService;
 import com.example.alddeul_babsang.web.dto.StoreDTO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -9,13 +11,15 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/reports")
 @AllArgsConstructor
 public class ReportController {
 
-    private StoreService storeService;
+    private final StoreService storeService;
+    private final CoordinatesService coordinatesService;
 
     // 제보된 업소 조회
     @GetMapping("/")
@@ -31,5 +35,12 @@ public class ReportController {
     public ApiResponse<String> postStore(@RequestBody StoreDTO.StoreReport report) {
         // service 기능 - db 저장,
         return ApiResponse.onSuccess(storeService.reportStore(report));
+    }
+
+    // 업소 좌표 조회
+    @GetMapping("/testCoordinates")
+    public ApiResponse<StoreDTO.Coordinates> getCoordinates(@RequestParam String address) {
+        System.out.println(address);
+        return ApiResponse.onSuccess(coordinatesService.getStoreCoordinates(address));
     }
 }

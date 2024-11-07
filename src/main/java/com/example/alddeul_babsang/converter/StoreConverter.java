@@ -75,6 +75,7 @@ public class StoreConverter {
         storeEntity.setName(report.getName());
         storeEntity.setCategory(report.getCategory());
         storeEntity.setAddress(report.getAddress());
+        storeEntity.setRegion((extractRegion(report.getAddress())));
         storeEntity.setContact(report.getContact());
         storeEntity.setLatitude(latitude);
         storeEntity.setLongitude(longitude);

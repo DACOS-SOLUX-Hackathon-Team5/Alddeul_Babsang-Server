@@ -29,6 +29,8 @@ public class StoreService {
     private final ReportRepository reportRepository;
     private final MenuRepository menuRepository;
 
+    private final CoordinatesService coordinatesService;
+
     // 업소 리스트 조회
     public List<StoreDTO.StoreInfo> getStoreList(Status status) {
         // 업소 status에 따라 처리
@@ -52,7 +54,7 @@ public class StoreService {
 
         // User ID 조회 -> 수정할 것
         User user = userRepository.findById(1L)
-                .orElseThrow(() -> new TempHandler(ErrorStatus.STORE_ERROR_ID));
+                .orElseThrow(() -> new TempHandler(ErrorStatus.USER_ERROR_ID));
 
         // 유저가 이미 제보했는지 확인
         if (isAlreadyReported(user, report.getName())) {
@@ -60,9 +62,13 @@ public class StoreService {
         }
 
         // 주소 -> 위도, 경도 변환
-        double[] coordinates = getCoordinates(report.getAddress());
-        double latitude = coordinates[0];
-        double longitude = coordinates[1];
+        StoreDTO.Coordinates coordinates = coordinatesService.getStoreCoordinates(report.getAddress());
+        double latitude = Double.parseDouble(coordinates.getLatitude());
+        double longitude = Double.parseDouble(coordinates.getLongitude());
+
+        // 주소 -> 구 추출
+
+//        System.out.println("latitude: " + latitude + "longitude: "+longitude);
 
         // 업소 저장
         Store store = StoreConverter.toStoreEntity(report, latitude, longitude);
@@ -78,11 +84,6 @@ public class StoreService {
         return store.isPresent() && reportRepository.existsByUserAndStore(user, store.get());
     }
 
-    private double[] getCoordinates(String address) {
-        // 주소를 위도와 경도로 변환하는 로직, 외부 API 사용
-        // 예시: 외부 API 호출 로직 작성할 것
-        return new double[] {37.5665, 126.9780}; // 변환된 위도, 경도 반환 (예시)
-    }
 
     private void saveReport(User user, Store store, Menu menu) {
         Report report = new Report();
