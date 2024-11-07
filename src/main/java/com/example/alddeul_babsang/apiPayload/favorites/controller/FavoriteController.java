@@ -1,11 +1,9 @@
 
-package com.example.alddeul_babsang.favorites.controller;
+package com.example.alddeul_babsang.apiPayload.favorites.controller;
 
-import com.example.alddeul_babsang.entity.Favorite;
-import com.example.alddeul_babsang.favorites.dto.FavoriteStoreDetailDto;
-import com.example.alddeul_babsang.favorites.dto.FavoriteRequestDto;
-import com.example.alddeul_babsang.favorites.dto.FavoriteResponseDto;
-import com.example.alddeul_babsang.favorites.service.FavoriteService;
+import com.example.alddeul_babsang.apiPayload.favorites.service.FavoriteService;
+import com.example.alddeul_babsang.apiPayload.favorites.dto.FavoriteStoreDetailDto;
+import com.example.alddeul_babsang.apiPayload.favorites.dto.FavoriteRequestDto;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

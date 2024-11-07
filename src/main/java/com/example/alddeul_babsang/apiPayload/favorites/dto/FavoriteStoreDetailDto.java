@@ -1,4 +1,4 @@
-package com.example.alddeul_babsang.favorites.dto;
+package com.example.alddeul_babsang.apiPayload.favorites.dto;
 
 import com.example.alddeul_babsang.entity.enums.Category;
 import lombok.AllArgsConstructor;

@@ -1,10 +1,17 @@
 package com.example.alddeul_babsang.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 
+
+@EntityListeners(AuditingEntityListener.class)
+@NoArgsConstructor
 @Entity
 public class Review {
     @Id
@@ -27,4 +34,14 @@ public class Review {
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="store_id")
     private Store store;
+
+
+
+    public Review(String content, float rating, String imagePath, User user, Store store) {
+        this.content = content;
+        this.star_rating = rating;
+        this.image = imagePath;
+        this.user = user;
+        this.store = store;
+    }
 }

@@ -1,12 +1,12 @@
-package com.example.alddeul_babsang.favorites.service;
+package com.example.alddeul_babsang.apiPayload.favorites.service;
 
 import com.example.alddeul_babsang.entity.Favorite;
 import com.example.alddeul_babsang.entity.Store;
 import com.example.alddeul_babsang.entity.User;
-import com.example.alddeul_babsang.favorites.dto.FavoriteStoreDetailDto;
-import com.example.alddeul_babsang.favorites.repository.FavoriteRepository;
-import com.example.alddeul_babsang.favorites.repository.StoreRepository;
-import com.example.alddeul_babsang.favorites.repository.UserRepository;
+import com.example.alddeul_babsang.apiPayload.favorites.dto.FavoriteStoreDetailDto;
+import com.example.alddeul_babsang.apiPayload.favorites.repository.FavoriteRepository;
+import com.example.alddeul_babsang.apiPayload.favorites.repository.StoreRepository;
+import com.example.alddeul_babsang.apiPayload.favorites.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

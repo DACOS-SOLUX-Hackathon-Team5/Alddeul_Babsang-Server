@@ -1,4 +1,4 @@
-package com.example.alddeul_babsang.favorites.repository;
+package com.example.alddeul_babsang.apiPayload.favorites.repository;
 import com.example.alddeul_babsang.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
