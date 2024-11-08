@@ -13,7 +13,16 @@ public enum ErrorStatus implements BaseErrorCode {
     _INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "COMMON500", "서버 에러, 관리자에게 문의 바랍니다."),
     _BAD_REQUEST(HttpStatus.BAD_REQUEST, "COMMON400", "잘못된 요청입니다."),
     _UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "COMMON401", "인증이 필요합니다."),
-    _FORBIDDEN(HttpStatus.FORBIDDEN, "COMMON403", "금지된 요청입니다.");
+    _FORBIDDEN(HttpStatus.FORBIDDEN, "COMMON403", "금지된 요청입니다."),
+
+
+    USER_ERROR_ID(HttpStatus.FORBIDDEN, "USER4001", "존재하지 않은 user id 입니다."),
+    STORE_ERROR_ID(HttpStatus.FORBIDDEN, "STORE4001", "존재하지 않은 store id 입니다."),
+
+    _FILE_UPLOAD_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "COMMON500", "파일 업로드 실패, 파일을 다시 확인해주세요."),  // 파일 업로드 실패 추가
+    _INVALID_FILE_FORMAT(HttpStatus.BAD_REQUEST, "COMMON400", "유효하지 않은 파일 형식입니다."),
+    _FILE_TOO_LARGE(HttpStatus.BAD_REQUEST, "COMMON400", "파일 크기가 너무 큽니다. 다시 시도해주세요.");
+
 
     private final HttpStatus httpStatus;
     private final String code;
