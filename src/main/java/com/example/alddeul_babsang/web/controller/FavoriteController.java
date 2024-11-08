@@ -1,9 +1,9 @@
 
 package com.example.alddeul_babsang.web.controller;
 
+import com.example.alddeul_babsang.service.FavoriteService;
 import com.example.alddeul_babsang.web.dto.FavoriteStoreDetailDto;
 import com.example.alddeul_babsang.web.dto.FavoriteRequestDto;
-import com.example.alddeul_babsang.service.CoordinatesService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +21,7 @@ public class FavoriteController {
     //좋아요 등록하기
     //좋아요 삭제하기
     @Autowired
-    private CoordinatesService.FavoriteService favoriteService;
+    private FavoriteService favoriteService;
 
     @GetMapping("/{userId}")
     public ResponseEntity<?> getFavoritesByUser(@PathVariable int userId) {

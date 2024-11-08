@@ -1,5 +1,6 @@
 package com.example.alddeul_babsang.converter;
 
+import com.example.alddeul_babsang.entity.Favorite;
 import com.example.alddeul_babsang.entity.Menu;
 import com.example.alddeul_babsang.entity.Review;
 import com.example.alddeul_babsang.entity.Store;
@@ -8,6 +9,7 @@ import com.example.alddeul_babsang.entity.enums.Status;
 import com.example.alddeul_babsang.web.dto.StoreDTO;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class StoreConverter {
@@ -19,7 +21,7 @@ public class StoreConverter {
                 .name(store.getName())
                 .category(store.getCategory())
                 .address(store.getAddress())
-                .region(extractRegion(store.getAddress()))
+                .region(store.getRegion())
                 .latitude(store.getLatitude())
                 .longitude(store.getLongitude())
                 .build();
@@ -39,22 +41,22 @@ public class StoreConverter {
     }
 
     // 업소 정보 형식으로 매핑
-    public static StoreDTO.StoreInfo toStoreInfo(Store store) {
+    public static StoreDTO.StoreInfo toStoreInfo(Store store, boolean favorite) {
         return StoreDTO.StoreInfo.builder()
+                .storeId(store.getId())
                 .name(store.getName())
                 .category(store.getCategory())
                 .address(store.getAddress())
                 .contact(store.getContact())
                 .imageUrl(store.getThumnail())
-                // 유저 id에 따라 좋아요 기능 반영해야 함
-                // .isFavorite()
+                .isFavorite(favorite)
                 .build();
     }
 
     // 업소 상세 정보 형식으로 매핑
-    public static StoreDTO.StoreDetail toStoreDetail(Store store, Menu menu) {
+    public static StoreDTO.StoreDetail toStoreDetail(Store store, Menu menu, boolean favorite) {
         // 업소 기본 정보
-        StoreDTO.StoreInfo storeInfo = toStoreInfo(store);
+        StoreDTO.StoreInfo storeInfo = toStoreInfo(store, favorite);
 
         // 메뉴 정보
         StoreDTO.MenuInfo menu1 = toMenuInfo(menu.getName1(), menu.getPrice1());

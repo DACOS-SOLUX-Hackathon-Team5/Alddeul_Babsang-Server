@@ -4,6 +4,10 @@ import com.example.alddeul_babsang.entity.enums.Category;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class StoreDTO {
     // 위도-경도가 있는 업소 정보
@@ -81,5 +85,25 @@ public class StoreDTO {
     public static class Coordinates {
         private String longitude; // 경도
         private String latitude;  // 위도
+    }
+
+    // 업소 CSV 데이터
+    @Getter
+    @Builder
+    public static class StoreCsvData {
+        private Long storeId;            // 업소아이디
+        private String storeName;         // 업소명
+        private Integer categoryCode;     // 분류코드
+        private String address;           // 업소 주소
+        private String storeContact;       // 업소 전화번호
+        private String region;            // 구
+        private double latitude;          // latitude
+        private double longitude;         // longitude
+        private String top5Tags;          // Top 5 Tags and Counts
+        private Integer cluster1;         // cluster
+        private Integer cluster2;         // cluster2
+        private Integer cluster3;         // cluster3
+        private String menu1;             // 메뉴1
+        private String menu2;             // 메뉴2
     }
 }
