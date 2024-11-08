@@ -28,9 +28,8 @@ def find_nearest_stores(
     return nearest_stores[["name"]]  # 가게 이름만 반환
 
 
-# 데이터프레임 로드
 df_recommended = pd.read_csv(
-    r"C:\Users\82107\Desktop\Alddeul_Babsang-Server\src\main\resources\df_recommended (1).csv"
+    r"src/main/resources/df_recommended (1).csv"
 )
 
 # 명령행 인수에서 위도, 경도, 클러스터 ID, 업소 ID 받기

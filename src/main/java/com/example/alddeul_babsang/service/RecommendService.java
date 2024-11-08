@@ -74,7 +74,8 @@ public class RecommendService {
                 .map(store -> new RecommendationResponseDto(
                         store.getName(),
                         store.getCategory(),
-                        store.getRegion()
+                        store.getRegion(),
+                        store.getId()
                 ))
                 .collect(Collectors.toList());
         return  response;
