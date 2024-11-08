@@ -2,6 +2,7 @@
 package com.example.alddeul_babsang.web.controller;
 
 import com.example.alddeul_babsang.apiPayload.ApiResponse;
+import com.example.alddeul_babsang.service.RecommendService;
 import com.example.alddeul_babsang.web.dto.FavoriteResponseDto;
 import com.example.alddeul_babsang.web.dto.FavoriteRequestDto;
 import com.example.alddeul_babsang.service.CoordinatesService;
@@ -23,9 +24,11 @@ public class FavoriteController {
     //좋아요 삭제하기
     @Autowired
     private CoordinatesService.FavoriteService favoriteService;
+    private final RecommendService recommendService;
 
     @GetMapping("/{userId}")
     public ApiResponse<FavoriteResponseDto> getFavoritesByUser(@PathVariable int userId) {
+        System.out.println(recommendService.getRecommendByUser(userId));
         FavoriteResponseDto favoritesByUser = favoriteService.getFavoritesByUser(userId);
         return ApiResponse.onSuccess(favoritesByUser);
     }
@@ -39,8 +42,5 @@ public class FavoriteController {
         response.put("message: ", message);
         return ApiResponse.onSuccess(response);
     }
-
-
-
 
 }
