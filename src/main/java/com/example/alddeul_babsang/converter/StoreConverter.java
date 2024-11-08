@@ -55,7 +55,7 @@ public class StoreConverter {
     }
 
     // 업소 상세 정보 형식으로 매핑
-    public static StoreDTO.StoreDetail toStoreDetail(Store store, Menu menu, boolean favorite) {
+    public static StoreDTO.StoreDetail toStoreDetail(Store store, Menu menu, boolean favorite, float rating) {
         // 업소 기본 정보
         StoreDTO.StoreInfo storeInfo = toStoreInfo(store, favorite);
 
@@ -65,6 +65,7 @@ public class StoreConverter {
 
         return StoreDTO.StoreDetail.builder()
                 .storeInfo(storeInfo)
+                .aveRating(rating)
                 .menu1(menu1)
                 .menu2(menu2)
                 .build();
@@ -116,7 +117,6 @@ public class StoreConverter {
     // StoreReport DTO -> Menu 엔티티 변환
     public static Menu toMenuEntity(StoreDTO.StoreReport report) {
         Menu menu = new Menu();
-
         menu.setName1(report.getMenuName1());
         menu.setPrice1(report.getMenuPrice1());
         menu.setName2(report.getMenuName2());

@@ -32,9 +32,9 @@ public class StoreController {
     // 업소 상세 조회
     @PostMapping("/{id}")
     @Operation(summary = "업소 상세 조회", description = "store id 입력 - 착한/제보 업소 가능")
-    public ApiResponse<StoreDTO.StoreDetail> getStoreDetail(@PathVariable Long id,
+    public ApiResponse<StoreDTO.StoreDetail> getStoreDetail(@PathVariable Long storeId,
                                                             @RequestParam Long Userid) {
-        return ApiResponse.onSuccess(storeService.getStoreInfoDetail(id, Userid));
+        return ApiResponse.onSuccess(storeService.getStoreInfoDetail(storeId, Userid));
     }
 
     // 업소 리뷰 조회

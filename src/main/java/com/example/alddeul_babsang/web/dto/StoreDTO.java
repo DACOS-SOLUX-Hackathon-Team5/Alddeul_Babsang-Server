@@ -42,6 +42,7 @@ public class StoreDTO {
     @Builder
     public static class StoreDetail {
         private final StoreInfo storeInfo;
+        private final float aveRating;
         private final MenuInfo menu1; // 대표메뉴 1
         private final MenuInfo menu2; // 대표메뉴 2
     }

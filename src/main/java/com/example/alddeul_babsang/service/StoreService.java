@@ -25,6 +25,7 @@ public class StoreService {
     private final UserRepository userRepository;
     private final StoreRepository storeRepository;
     private final ReportRepository reportRepository;
+    private final ReviewRepository reviewRepository;
     private final MenuRepository menuRepository;
     private final FavoriteRepository favoriteRepository;
     private final CoordinatesService coordinatesService;
@@ -61,12 +62,17 @@ public class StoreService {
         userRepository.findById(userId)
                  .orElseThrow(() -> new TempHandler(ErrorStatus.USER_ERROR_ID));
 
+        // 리뷰 평균 구하기
+        Float averageRating = reviewRepository.findAverageRatingByStoreId(storeId);
+        float rating = (averageRating != null) ? averageRating : 0.0f;
+
+
         // Favorite 존재 여부 확인
         boolean isFavorite = favoriteRepository.existsByUserIdAndStoreId(userId, storeId);
 
          // store 메뉴 조회
         Menu menu = store.getMenu();
-        return StoreConverter.toStoreDetail(store, menu, isFavorite);
+        return StoreConverter.toStoreDetail(store, menu, isFavorite, rating);
     }
 
     // 업소 리뷰 조회
@@ -104,7 +110,6 @@ public class StoreService {
             }
         }
 
-
         // 주소 -> 위도, 경도 변환
         StoreDTO.Coordinates coordinates = coordinatesService.getStoreCoordinates(report.getAddress());
         double latitude = Double.parseDouble(coordinates.getLatitude());
@@ -113,6 +118,8 @@ public class StoreService {
         // 업소 저장
         Store store = StoreConverter.toStoreEntity(report, latitude, longitude, imagePath);
         Menu menu = StoreConverter.toMenuEntity(report);
+        store.setMenu(menu); // Store에 Menu 연결
+
         saveReport(user, store, menu); // Report 엔티티에 유저와 가게 관계 저장
 
         System.out.println(imagePath);
