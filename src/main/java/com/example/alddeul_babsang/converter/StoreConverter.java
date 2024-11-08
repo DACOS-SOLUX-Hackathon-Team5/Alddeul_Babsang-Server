@@ -94,7 +94,9 @@ public class StoreConverter {
     }
 
     // Store 엔티티 형식으로
-    public static Store toStoreEntity(StoreDTO.StoreReport report, double latitude, double longitude) {
+    public static Store toStoreEntity(StoreDTO.StoreReport report,
+                                      double latitude, double longitude,
+                                      String url) {
         Store storeEntity = new Store();
 
         storeEntity.setName(report.getName());
@@ -105,6 +107,7 @@ public class StoreConverter {
         storeEntity.setLatitude(latitude);
         storeEntity.setLongitude(longitude);
         storeEntity.setStatus(Status.PREGOOD);
+        storeEntity.setThumnail(url);
 
         return storeEntity;
     }

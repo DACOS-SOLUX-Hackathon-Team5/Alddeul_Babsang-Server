@@ -8,6 +8,7 @@ import com.example.alddeul_babsang.service.StoreService;
 import com.example.alddeul_babsang.web.dto.StoreDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,9 +31,9 @@ public class ReportController {
     }
 
     // 업소 제보 등록
-    @PostMapping("/post")
     @Operation(summary = "업소 제보 등록 API", description = "업소를 제보합니다. 바로 착한 업소 등록 x")
-    public ApiResponse<String> postStore(@RequestBody StoreDTO.StoreReport report) {
+    @PostMapping(value="/post", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ApiResponse<String> postStore(@RequestPart StoreDTO.StoreReport report) {
         // service 기능 - db 저장,
         return ApiResponse.onSuccess(storeService.reportStore(report));
     }

@@ -7,6 +7,7 @@ import com.example.alddeul_babsang.web.dto.ReviewDTO;
 import com.example.alddeul_babsang.web.dto.StoreDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public class StoreController {
     // 업소 리스트 조회
     @PostMapping("/")
     @Operation(summary = "업소 리스트 API", description = "착한 업소만 조회합니다.")
-    public ApiResponse<List<StoreDTO.StoreInfo>> getStores(@RequestBody Long userId) {
+    public ApiResponse<List<StoreDTO.StoreInfo>> getStores(@RequestParam Long userId) {
         // Status.Good: 착한 업소
         return ApiResponse.onSuccess(storeService.getStoreList(Status.GOOD, userId));
     }
@@ -30,7 +31,7 @@ public class StoreController {
     @PostMapping("/{id}")
     @Operation(summary = "업소 상세 조회", description = "store id 입력 - 착한/제보 업소 가능")
     public ApiResponse<StoreDTO.StoreDetail> getStoreDetail(@PathVariable Long id,
-                                                            @RequestBody Long Userid) {
+                                                            @RequestParam Long Userid) {
         return ApiResponse.onSuccess(storeService.getStoreInfoDetail(id, Userid));
     }
 

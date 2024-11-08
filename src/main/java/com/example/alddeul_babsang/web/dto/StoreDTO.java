@@ -3,6 +3,7 @@ package com.example.alddeul_babsang.web.dto;
 import com.example.alddeul_babsang.entity.enums.Category;
 import lombok.Builder;
 import lombok.Getter;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -65,8 +66,7 @@ public class StoreDTO {
         private final Integer menuPrice1;
         private final String menuName2;  // 대표메뉴2
         private final Integer menuPrice2;
-//        멀티 파트로 바꿀 것
-//        private final String imageUrl;   // 이미지 주소
+        private final MultipartFile imageUrl;   // 이미지 주소
     }
 
     // 좌표변환 테스트
