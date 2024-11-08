@@ -28,7 +28,7 @@ public class MapController {
     @PostMapping("/stores/{id}")
     @Operation(summary = "지도 - 착한 업소 정보 API", description = "전체 가게 중 하나 클릭")
     public ApiResponse<StoreDTO.StoreInfo> getMapStore(@PathVariable Long id,
-                                                       @RequestBody Long userId) {
+                                                       @RequestParam Long userId) {
         return ApiResponse.onSuccess(mapService.getStore(id, userId));
     }
 }

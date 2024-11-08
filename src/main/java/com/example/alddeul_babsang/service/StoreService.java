@@ -1,6 +1,7 @@
 package com.example.alddeul_babsang.service;
 
 import com.example.alddeul_babsang.apiPayload.code.status.ErrorStatus;
+import com.example.alddeul_babsang.apiPayload.exception.GeneralException;
 import com.example.alddeul_babsang.apiPayload.exception.handler.TempHandler;
 import com.example.alddeul_babsang.converter.StoreConverter;
 import com.example.alddeul_babsang.entity.*;
@@ -10,7 +11,9 @@ import com.example.alddeul_babsang.web.dto.ReviewDTO;
 import com.example.alddeul_babsang.web.dto.StoreDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -24,8 +27,8 @@ public class StoreService {
     private final ReportRepository reportRepository;
     private final MenuRepository menuRepository;
     private final FavoriteRepository favoriteRepository;
-
     private final CoordinatesService coordinatesService;
+    private final S3Service s3Service;
 
     // 업소 리스트 조회
     public List<StoreDTO.StoreInfo> getStoreList(Status status, Long userId) {
@@ -85,20 +88,30 @@ public class StoreService {
             return "이미 제보한 업소입니다.";
         }
 
+        String imagePath = null;
+        MultipartFile reviewImage = report.getImageUrl();
+        if (reviewImage != null && !reviewImage.isEmpty()) {
+            try {
+                imagePath = s3Service.uploadFile(reviewImage, "reviews");
+            } catch (GeneralException e) {
+                throw new GeneralException(ErrorStatus._FILE_UPLOAD_ERROR);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+
         // 주소 -> 위도, 경도 변환
         StoreDTO.Coordinates coordinates = coordinatesService.getStoreCoordinates(report.getAddress());
         double latitude = Double.parseDouble(coordinates.getLatitude());
         double longitude = Double.parseDouble(coordinates.getLongitude());
 
-        // 주소 -> 구 추출
-
-//        System.out.println("latitude: " + latitude + "longitude: "+longitude);
-
         // 업소 저장
-        Store store = StoreConverter.toStoreEntity(report, latitude, longitude);
+        Store store = StoreConverter.toStoreEntity(report, latitude, longitude, imagePath);
         Menu menu = StoreConverter.toMenuEntity(report);
         saveReport(user, store, menu); // Report 엔티티에 유저와 가게 관계 저장
 
+        System.out.println(imagePath);
         return "제보 완료";
     }
 
