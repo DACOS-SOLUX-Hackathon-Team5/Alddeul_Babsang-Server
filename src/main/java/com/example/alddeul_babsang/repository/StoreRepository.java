@@ -10,5 +10,6 @@ import java.util.Optional;
 public interface StoreRepository extends JpaRepository<Store, Long> {
     Optional<Store> findById(long newFavoriteStoreId);
     Optional<Store> findByName(String name);
+    List<Store> findByNameIn(List<String> names);
     List<Store> findAllByStatus(Status status);
 }
