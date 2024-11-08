@@ -8,6 +8,7 @@ import com.example.alddeul_babsang.entity.User;
 import com.example.alddeul_babsang.repository.ReviewRepository;
 import com.example.alddeul_babsang.repository.StoreRepository;
 import com.example.alddeul_babsang.repository.UserRepository;
+import com.example.alddeul_babsang.web.dto.ReviewResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,7 +22,7 @@ public class ReviewService {
     private  final UserRepository userRepository;
     private final StoreRepository storeRepository;
     private final ReviewRepository reviewRepository;
-    public void createReview(int storeId, int userId, float rating, String content, MultipartFile reviewImage) {
+    public ReviewResponseDto createReview(int storeId, int userId, float rating, String content, MultipartFile reviewImage) {
         User user=userRepository.findById(userId).orElseThrow(() ->  new GeneralException(ErrorStatus._BAD_REQUEST));
         Store store= storeRepository.findById(storeId).orElseThrow(() ->  new GeneralException(ErrorStatus._BAD_REQUEST));
         String imagePath = null;
@@ -37,7 +38,8 @@ public class ReviewService {
         Review review = new Review(content, rating, imagePath, user, store);
         // 리뷰 저장
         reviewRepository.save(review);
-
+        ReviewResponseDto reviewResponseDto = new ReviewResponseDto(userId,storeId, "리뷰등록성공");
+        return reviewResponseDto;
     }
 }
 

@@ -1,19 +1,20 @@
 
 package com.example.alddeul_babsang.web.controller;
 
-import com.example.alddeul_babsang.web.dto.FavoriteStoreDetailDto;
+import com.example.alddeul_babsang.apiPayload.ApiResponse;
+import com.example.alddeul_babsang.web.dto.FavoriteResponseDto;
 import com.example.alddeul_babsang.web.dto.FavoriteRequestDto;
 import com.example.alddeul_babsang.service.CoordinatesService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/favorites")
 public class FavoriteController {
@@ -24,19 +25,19 @@ public class FavoriteController {
     private CoordinatesService.FavoriteService favoriteService;
 
     @GetMapping("/{userId}")
-    public ResponseEntity<?> getFavoritesByUser(@PathVariable int userId) {
-        List<FavoriteStoreDetailDto> favoriteStores= favoriteService.getFavoritesByUser(userId);
-        return ResponseEntity.ok().body(Map.of("favoriteRestaurants", favoriteStores));
+    public ApiResponse<FavoriteResponseDto> getFavoritesByUser(@PathVariable int userId) {
+        FavoriteResponseDto favoritesByUser = favoriteService.getFavoritesByUser(userId);
+        return ApiResponse.onSuccess(favoritesByUser);
     }
 
     @PostMapping
-    public ResponseEntity<?> changeFavoriteStore(@Valid @RequestBody FavoriteRequestDto request){
+    public ApiResponse<Map<String, String>> changeFavoriteStore(@Valid @RequestBody FavoriteRequestDto request){
         int newFavoriteStoreId = request.getStoreId();
         int userId=request.getUserId();
         String message=favoriteService.changeFavoriteStore(userId,newFavoriteStoreId);
         Map<String, String> response = new HashMap<>();
         response.put("message: ", message);
-        return ResponseEntity.ok().body(response);
+        return ApiResponse.onSuccess(response);
     }
 
 
