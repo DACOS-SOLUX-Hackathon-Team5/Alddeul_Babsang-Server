@@ -23,6 +23,7 @@ public class StoreDTO {
     @Getter
     @Builder
     public static class StoreInfo {
+        private final Long storeId; // 업소 아이디
         private final String name;       // 업소 이름
         private final Category category; // 업종
         private final String address;    // 주소
