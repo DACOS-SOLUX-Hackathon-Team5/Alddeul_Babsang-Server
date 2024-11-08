@@ -53,8 +53,8 @@ public class ReportController {
                 .contact(contact)
                 .menuName1(menuName1)
                 .menuPrice1(menuPrice1)
-                .menuName2(menuName2)
-                .menuPrice2(menuPrice2)
+                .menuName2(menuName2 != null ? menuName2 : "메뉴 없음")
+                .menuPrice2(menuPrice2 != null ? menuPrice2 : 0)
                 .imageUrl(imageUrl)
                 .build();
 

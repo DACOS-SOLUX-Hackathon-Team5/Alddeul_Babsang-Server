@@ -116,12 +116,12 @@ public class StoreConverter {
 
     // StoreReport DTO -> Menu 엔티티 변환
     public static Menu toMenuEntity(StoreDTO.StoreReport report) {
+        // Menu 객체 생성 시 기본값을 제공하여 유효한 객체를 항상 반환
         Menu menu = new Menu();
-        menu.setName1(report.getMenuName1());
-        menu.setPrice1(report.getMenuPrice1());
-        menu.setName2(report.getMenuName2());
-        menu.setPrice2(report.getMenuPrice2());
-
+        menu.setName1(report.getMenuName1() != null ? report.getMenuName2() : "메뉴 없음");
+        menu.setPrice1(report.getMenuPrice1() != null ? report.getMenuPrice2() : 0);
+        menu.setName2(report.getMenuName2() != null ? report.getMenuName2() : "메뉴 없음"); // 기본값 ""
+        menu.setPrice2(report.getMenuPrice2() != null ? report.getMenuPrice2() : 0); // 기본값 0
         return menu;
     }
 }

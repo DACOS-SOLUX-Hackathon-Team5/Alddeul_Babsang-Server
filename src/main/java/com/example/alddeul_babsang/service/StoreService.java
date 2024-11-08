@@ -118,7 +118,6 @@ public class StoreService {
         // 업소 저장
         Store store = StoreConverter.toStoreEntity(report, latitude, longitude, imagePath);
         Menu menu = StoreConverter.toMenuEntity(report);
-        store.setMenu(menu); // Store에 Menu 연결
 
         saveReport(user, store, menu); // Report 엔티티에 유저와 가게 관계 저장
 
@@ -134,12 +133,13 @@ public class StoreService {
 
 
     private void saveReport(User user, Store store, Menu menu) {
+        Store newStore = storeRepository.save(store);
+        Menu newMenu = menuRepository.save(menu);
+        newMenu.setStore(newStore);
+
         Report report = new Report();
         report.setUser(user);
         report.setStore(store);
-
-        storeRepository.save(store);
-        menuRepository.save(menu);
         reportRepository.save(report);
     }
 }
