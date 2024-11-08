@@ -25,7 +25,7 @@ public class ReportController {
     // 제보된 업소 조회
     @PostMapping("/")
     @Operation(summary = "제보된 업소 조회 API", description = "제보한 업소만 조회합니다.")
-    public ApiResponse<List<StoreDTO.StoreInfo>> getStores(@RequestBody Long userId) {
+    public ApiResponse<List<StoreDTO.StoreInfo>> getStores(@RequestParam Long userId) {
         // Status.PREGOOD: 예비 착한 업소(= 제보된 업소)
         return ApiResponse.onSuccess(storeService.getStoreList(Status.PREGOOD, userId));
     }
