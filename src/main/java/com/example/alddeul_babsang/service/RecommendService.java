@@ -4,6 +4,7 @@ import com.example.alddeul_babsang.apiPayload.code.status.ErrorStatus;
 import com.example.alddeul_babsang.apiPayload.exception.handler.TempHandler;
 import com.example.alddeul_babsang.entity.Favorite;
 import com.example.alddeul_babsang.entity.Store;
+import com.example.alddeul_babsang.entity.enums.Status;
 import com.example.alddeul_babsang.repository.FavoriteRepository;
 import com.example.alddeul_babsang.repository.StoreRepository;
 import com.example.alddeul_babsang.web.dto.RecommendationResponseDto;
@@ -27,45 +28,52 @@ public class RecommendService {
     private  final StoreRepository storeRepository;
 
     public List<RecommendationResponseDto> getRecommendNearestStore(Long storeId) {
-        Optional<Store> currentStoreOptional = Optional.ofNullable(storeRepository.findById(storeId).orElseThrow(() -> new TempHandler(ErrorStatus.STORE_ERROR_ID)));
+        // Store 가져오기
+        Store currentStore = storeRepository.findById(storeId)
+                .orElseThrow(() -> new TempHandler(ErrorStatus.STORE_ERROR_ID));
+
+        // 결과 리스트 선언
         List<RecommendationResponseDto> response = new ArrayList<>();
+
+        // Store의 Status 확인
+        if (currentStore.getStatus() == Status.PREGOOD) {
+            // Status가 PREGOOD이면 빈 리스트 반환
+            return response;
+        }
+
+        // Status가 GOOD일 경우 진행
+        int clusterId = (currentStore.getCluster2() != null) ? currentStore.getCluster2() : 1; // null이면 1로 설정
+        double latitude = currentStore.getLatitude();
+        double longitude = currentStore.getLongitude();
+        System.out.println(clusterId + "+++++++++++++++++++");
+        System.out.println(latitude);
+        System.out.println(longitude);
+
+        // 추천 결과 저장할 리스트 선언
         List<String> recommendations = new ArrayList<>();
-        if (currentStoreOptional.isPresent()) {
-            Store currentStore = currentStoreOptional.get(); // Optional에서 실제 Store 객체를 가져옴
-            int clusterId = currentStore.getCluster2();
-            System.out.println(clusterId+"+++++++++++++++++++");// 클러스터 ID 가져오기
-            double latitude = currentStore.getLatitude(); // 위도 가져오기
-            System.out.println(latitude);
-            double longitude = currentStore.getLongitude(); // 경도 가져오기
-            System.out.println(longitude);
 
-            String[] command = {
-                    "python",
-                    "src/main/resources/from_geopy.py",  // Python 스크립트 경로
-                    String.valueOf(latitude), // 위도
-                    String.valueOf(longitude), // 경도
-                    String.valueOf(clusterId), // 클러스터 ID
-                    String.valueOf(storeId)
-            };
+        String[] command = {
+                "python",
+                "src/main/resources/from_geopy.py",  // Python 스크립트 경로
+                String.valueOf(latitude), // 위도
+                String.valueOf(longitude), // 경도
+                String.valueOf(clusterId), // 클러스터 ID
+                String.valueOf(storeId)
+        };
 
-            try {
-                ProcessBuilder processBuilder = new ProcessBuilder(command);
-                Process process = processBuilder.start();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    recommendations.add(line); // Python 스크립트의 출력 수집
-                }
-                process.waitFor();
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                throw new RuntimeException("Error executing Python script", e);
+        try {
+            ProcessBuilder processBuilder = new ProcessBuilder(command);
+            Process process = processBuilder.start();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                recommendations.add(line); // Python 스크립트의 출력 수집
             }
+            process.waitFor();
 
-        } else {
-            // Optional이 비어 있을 경우의 처리
-            throw new TempHandler(ErrorStatus.STORE_ERROR_ID);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error executing Python script", e);
         }
 
         System.out.println(recommendations);
@@ -78,7 +86,7 @@ public class RecommendService {
                         store.getId()
                 ))
                 .collect(Collectors.toList());
-        return  response;
+        return response;
     }
 
     public List<RecommendationResponseDto> getRecommendByUser(Long userId) {
