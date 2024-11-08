@@ -30,8 +30,8 @@ public class StoreController {
     }
 
     // 업소 상세 조회
-    @PostMapping("/{id}")
-    @Operation(summary = "업소 상세 조회", description = "store id 입력 - 착한/제보 업소 가능")
+    @PostMapping("/{storeId}")
+    @Operation(summary = "착한/제보 업소 상세 조회", description = "store id 입력 - 착한/제보 업소 가능")
     public ApiResponse<StoreDTO.StoreDetail> getStoreDetail(@PathVariable Long storeId,
                                                             @RequestParam Long Userid) {
         return ApiResponse.onSuccess(storeService.getStoreInfoDetail(storeId, Userid));
@@ -39,7 +39,7 @@ public class StoreController {
 
     // 업소 리뷰 조회
     @GetMapping("/{id}/reviews")
-    @Operation(summary = "업소 리뷰 조회", description = "store id 입력 - 착한/제보 업소 가능")
+    @Operation(summary = "착한/제보 업소 리뷰 조회", description = "store id 입력 - 착한/제보 업소 가능")
     public ApiResponse<ReviewDTO.StoreReviews> getStoreReviews(@PathVariable Long id) {
         return ApiResponse.onSuccess(storeService.getReviewList(id));
     }
