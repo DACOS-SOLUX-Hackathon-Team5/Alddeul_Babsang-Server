@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 public class Menu {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     private String name1;
     private int price1;

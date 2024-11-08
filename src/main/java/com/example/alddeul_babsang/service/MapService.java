@@ -6,8 +6,12 @@ import com.example.alddeul_babsang.converter.MapConverter;
 import com.example.alddeul_babsang.converter.StoreConverter;
 import com.example.alddeul_babsang.entity.Menu;
 import com.example.alddeul_babsang.entity.Store;
+import com.example.alddeul_babsang.entity.User;
 import com.example.alddeul_babsang.entity.enums.Status;
+import com.example.alddeul_babsang.repository.FavoriteRepository;
+import com.example.alddeul_babsang.repository.MenuRepository;
 import com.example.alddeul_babsang.repository.StoreRepository;
+import com.example.alddeul_babsang.repository.UserRepository;
 import com.example.alddeul_babsang.web.dto.StoreDTO;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.PathNotFoundException;
@@ -29,6 +33,8 @@ import java.util.stream.Collectors;
 public class MapService {
 
     private final StoreRepository storeRepository;
+    private final UserRepository userRepository;
+    private final FavoriteRepository favoriteRepository;
 
     // 착한 업소 리스트 조회
     public List<StoreDTO.MapStore> getMapStoreList() {
@@ -46,11 +52,16 @@ public class MapService {
     }
 
     // 착한 업소 조회
-    public StoreDTO.StoreInfo getStore(Long storeId) {
+    public StoreDTO.StoreInfo getStore(Long storeId, Long userId) {
         // store id 조회 -> 예외 처리
         Store store = storeRepository.findById(storeId)
                 .orElseThrow(() -> new TempHandler(ErrorStatus.STORE_ERROR_ID));
 
-        return StoreConverter.toStoreInfo(store);
+        userRepository.findById(userId)
+                .orElseThrow(() -> new TempHandler(ErrorStatus.USER_ERROR_ID));
+
+        // Favorite 존재 여부 확인
+        boolean isFavorite = favoriteRepository.existsByUserIdAndStoreId(userId, storeId);
+        return StoreConverter.toStoreInfo(store, isFavorite);
     }
 }

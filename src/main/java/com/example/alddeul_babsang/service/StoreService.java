@@ -3,17 +3,10 @@ package com.example.alddeul_babsang.service;
 import com.example.alddeul_babsang.apiPayload.code.status.ErrorStatus;
 import com.example.alddeul_babsang.apiPayload.exception.handler.TempHandler;
 import com.example.alddeul_babsang.converter.StoreConverter;
-import com.example.alddeul_babsang.entity.Menu;
-import com.example.alddeul_babsang.entity.Review;
-import com.example.alddeul_babsang.entity.Report;
-import com.example.alddeul_babsang.entity.Store;
-import com.example.alddeul_babsang.entity.User;
+import com.example.alddeul_babsang.entity.*;
 import com.example.alddeul_babsang.entity.enums.Status;
-import com.example.alddeul_babsang.repository.MenuRepository;
-import com.example.alddeul_babsang.repository.ReportRepository;
-import com.example.alddeul_babsang.repository.StoreRepository;
+import com.example.alddeul_babsang.repository.*;
 import com.example.alddeul_babsang.web.dto.ReviewDTO;
-import com.example.alddeul_babsang.repository.UserRepository;
 import com.example.alddeul_babsang.web.dto.StoreDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,28 +23,43 @@ public class StoreService {
     private final StoreRepository storeRepository;
     private final ReportRepository reportRepository;
     private final MenuRepository menuRepository;
+    private final FavoriteRepository favoriteRepository;
 
     private final CoordinatesService coordinatesService;
 
     // 업소 리스트 조회
-    public List<StoreDTO.StoreInfo> getStoreList(Status status) {
+    public List<StoreDTO.StoreInfo> getStoreList(Status status, Long userId) {
         // 업소 status에 따라 처리
         List<Store> stores = storeRepository.findAllByStatus(status);
 
+        // User 존재 여부 확인
+        userRepository.findById(userId)
+                .orElseThrow(() -> new TempHandler(ErrorStatus.USER_ERROR_ID));
+
+        // 각 Store가 즐겨찾기인지 확인하여 리스트 반환
         return stores.stream()
-                .map(StoreConverter::toStoreInfo)
+                .map(store -> {
+                    boolean isFavorite = favoriteRepository.existsByUserIdAndStoreId(userId, store.getId());
+                    return StoreConverter.toStoreInfo(store, isFavorite);
+                })
                 .collect(Collectors.toList());
     }
 
     // 업소 상세 조회
-    public StoreDTO.StoreDetail getStoreInfoDetail(Long storeId) {
+    public StoreDTO.StoreDetail getStoreInfoDetail(Long storeId, Long userId) {
         // store id 조회 -> 예외 처리
         Store store = storeRepository.findById(storeId)
                 .orElseThrow(() -> new TempHandler(ErrorStatus.STORE_ERROR_ID));
 
-        // store 메뉴 조회
+        userRepository.findById(userId)
+                 .orElseThrow(() -> new TempHandler(ErrorStatus.USER_ERROR_ID));
+
+        // Favorite 존재 여부 확인
+        boolean isFavorite = favoriteRepository.existsByUserIdAndStoreId(userId, storeId);
+
+         // store 메뉴 조회
         Menu menu = store.getMenu();
-        return StoreConverter.toStoreDetail(store, menu);
+        return StoreConverter.toStoreDetail(store, menu, isFavorite);
     }
 
     // 업소 리뷰 조회

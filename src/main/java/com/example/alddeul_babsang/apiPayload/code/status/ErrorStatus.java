@@ -18,6 +18,7 @@ public enum ErrorStatus implements BaseErrorCode {
 
     USER_ERROR_ID(HttpStatus.FORBIDDEN, "USER4001", "존재하지 않은 user id 입니다."),
     STORE_ERROR_ID(HttpStatus.FORBIDDEN, "STORE4001", "존재하지 않은 store id 입니다."),
+    FAVORITE_ERROR_ID(HttpStatus.FORBIDDEN, "STORE4001", "존재하지 않은 favorite id 입니다."),
 
     _FILE_UPLOAD_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "COMMON500", "파일 업로드 실패, 파일을 다시 확인해주세요."),  // 파일 업로드 실패 추가
     _INVALID_FILE_FORMAT(HttpStatus.BAD_REQUEST, "COMMON400", "유효하지 않은 파일 형식입니다."),

@@ -22,11 +22,11 @@ public class ReportController {
     private final CoordinatesService coordinatesService;
 
     // 제보된 업소 조회
-    @GetMapping("/")
+    @PostMapping("/")
     @Operation(summary = "제보된 업소 조회 API", description = "제보한 업소만 조회합니다.")
-    public ApiResponse<List<StoreDTO.StoreInfo>> getStores() {
+    public ApiResponse<List<StoreDTO.StoreInfo>> getStores(@RequestBody Long userId) {
         // Status.PREGOOD: 예비 착한 업소(= 제보된 업소)
-        return ApiResponse.onSuccess(storeService.getStoreList(Status.PREGOOD));
+        return ApiResponse.onSuccess(storeService.getStoreList(Status.PREGOOD, userId));
     }
 
     // 업소 제보 등록
@@ -37,10 +37,4 @@ public class ReportController {
         return ApiResponse.onSuccess(storeService.reportStore(report));
     }
 
-    // 업소 좌표 조회
-    @GetMapping("/testCoordinates")
-    public ApiResponse<StoreDTO.Coordinates> getCoordinates(@RequestParam String address) {
-        System.out.println(address);
-        return ApiResponse.onSuccess(coordinatesService.getStoreCoordinates(address));
-    }
 }
