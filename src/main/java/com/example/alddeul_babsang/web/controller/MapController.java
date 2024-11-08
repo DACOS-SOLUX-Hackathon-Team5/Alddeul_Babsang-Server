@@ -29,6 +29,7 @@ public class MapController {
     @Operation(summary = "지도 - 착한 업소 정보 API", description = "전체 가게 중 하나 클릭")
     public ApiResponse<StoreDTO.StoreInfo> getMapStore(@PathVariable Long id,
                                                        @RequestParam Long userId) {
+        System.out.println("컨트롤러 단의 userId: " + userId);
         return ApiResponse.onSuccess(mapService.getStore(id, userId));
     }
 }

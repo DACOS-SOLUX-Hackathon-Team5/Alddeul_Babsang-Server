@@ -53,6 +53,7 @@ public class MapService {
 
     // 착한 업소 조회
     public StoreDTO.StoreInfo getStore(Long storeId, Long userId) {
+        System.out.println("서비스 단의 userId: " + userId);
         // store id 조회 -> 예외 처리
         Store store = storeRepository.findById(storeId)
                 .orElseThrow(() -> new TempHandler(ErrorStatus.STORE_ERROR_ID));
@@ -62,6 +63,7 @@ public class MapService {
 
         // Favorite 존재 여부 확인
         boolean isFavorite = favoriteRepository.existsByUserIdAndStoreId(userId, storeId);
+        System.out.println("서비스 단의 isFavorite 여부: " + isFavorite);
         return StoreConverter.toStoreInfo(store, isFavorite);
     }
 }

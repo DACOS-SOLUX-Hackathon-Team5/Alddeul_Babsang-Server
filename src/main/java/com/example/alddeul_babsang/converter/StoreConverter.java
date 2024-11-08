@@ -42,6 +42,7 @@ public class StoreConverter {
 
     // 업소 정보 형식으로 매핑
     public static StoreDTO.StoreInfo toStoreInfo(Store store, boolean favorite) {
+        System.out.println("컨버터 단의 favorite 여부: " + favorite);
         return StoreDTO.StoreInfo.builder()
                 .storeId(store.getId())
                 .name(store.getName())
