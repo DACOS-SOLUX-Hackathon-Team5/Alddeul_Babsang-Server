@@ -42,7 +42,7 @@ public class RecommendService {
             try {
 
                 ProcessBuilder processBuilder = new ProcessBuilder(
-                        "python","C:/Users/82107/Desktop/Alddeul_Babsang-Server/src/main/resources/recommend.py",
+                        "python","src/main/resources/recommend.py",
                         category,
                         tags,
                         region

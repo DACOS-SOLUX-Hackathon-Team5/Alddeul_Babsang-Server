@@ -61,7 +61,7 @@ def get_similar_stores(df_recommended, liked_categories, liked_tags, liked_gus):
 
 
 df_recommended = pd.read_csv(
-    r"C:\Users\82107\Desktop\Alddeul_Babsang-Server\src\main\resources\df_recommended (1).csv"
+    r"src/main/resources/df_recommended (1).csv"
 )
 
 similar_stores = get_similar_stores(
