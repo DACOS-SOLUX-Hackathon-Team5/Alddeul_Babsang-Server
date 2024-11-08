@@ -82,6 +82,8 @@ public class StoreConverter {
                         .nickname(review.getUser().getNickname())
                         .rate(review.getStar_rating())
                         .content(review.getContent())
+                        .date(review.getCreatedAt())
+                        .image(review.getImage())
                         .build())
                 .collect(Collectors.toList());
 
