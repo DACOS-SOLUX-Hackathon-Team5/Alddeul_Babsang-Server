@@ -7,10 +7,7 @@ import com.example.alddeul_babsang.web.dto.ReviewDTO;
 import com.example.alddeul_babsang.web.dto.StoreDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,18 +19,19 @@ public class StoreController {
     private final StoreService storeService;
 
     // 업소 리스트 조회
-    @GetMapping("/")
+    @PostMapping("/")
     @Operation(summary = "업소 리스트 API", description = "착한 업소만 조회합니다.")
-    public ApiResponse<List<StoreDTO.StoreInfo>> getStores() {
+    public ApiResponse<List<StoreDTO.StoreInfo>> getStores(@RequestBody Long userId) {
         // Status.Good: 착한 업소
-        return ApiResponse.onSuccess(storeService.getStoreList(Status.GOOD));
+        return ApiResponse.onSuccess(storeService.getStoreList(Status.GOOD, userId));
     }
 
     // 업소 상세 조회
-    @GetMapping("/{id}")
+    @PostMapping("/{id}")
     @Operation(summary = "업소 상세 조회", description = "store id 입력 - 착한/제보 업소 가능")
-    public ApiResponse<StoreDTO.StoreDetail> getStoreDetail(@PathVariable Long id) {
-        return ApiResponse.onSuccess(storeService.getStoreInfoDetail(id));
+    public ApiResponse<StoreDTO.StoreDetail> getStoreDetail(@PathVariable Long id,
+                                                            @RequestBody Long Userid) {
+        return ApiResponse.onSuccess(storeService.getStoreInfoDetail(id, Userid));
     }
 
     // 업소 리뷰 조회
