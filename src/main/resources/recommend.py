@@ -67,7 +67,6 @@ df_recommended = pd.read_csv(
 similar_stores = get_similar_stores(
     df_recommended, sys.argv[1], sys.argv[2], sys.argv[3]
 )
-
 # Java에서 읽을 수 있도록 출력
 for store in similar_stores:
     print(store)
