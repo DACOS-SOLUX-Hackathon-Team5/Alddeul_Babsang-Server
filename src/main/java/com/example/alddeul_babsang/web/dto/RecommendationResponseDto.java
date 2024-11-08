@@ -12,6 +12,5 @@ public class RecommendationResponseDto {
     private  String name;       // 업소 이름
     private  Category category; // 업종
     private String region;
-
-
+    private Long storeId;
 }

@@ -66,19 +66,17 @@ public class RecommendService {
                 .map(store -> new RecommendationResponseDto(
                         store.getName(),
                         store.getCategory(),
-                        store.getRegion()
+                        store.getRegion(),
+                        store.getId()
                 ))
                 .collect(Collectors.toList());
 
         return  response;
-}
+    }
         private Favorite getRandomFavorite(List<Favorite> favorites){
         Random random = new Random();
         int randomIndex = random.nextInt(favorites.size());
         return favorites.get(randomIndex);
     }
-
-
-
-    }
+}
 
