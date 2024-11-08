@@ -4,9 +4,9 @@ import com.example.alddeul_babsang.entity.Favorite;
 import com.example.alddeul_babsang.entity.Store;
 import com.example.alddeul_babsang.repository.FavoriteRepository;
 import com.example.alddeul_babsang.repository.StoreRepository;
-import com.example.alddeul_babsang.repository.UserRepository;
-import com.example.alddeul_babsang.web.dto.FavoriteResponseDto;
+import com.example.alddeul_babsang.web.dto.RecommendationResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -15,6 +15,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,45 +23,62 @@ public class RecommendService {
     private  final FavoriteRepository favoriteRepository;
     private  final StoreRepository storeRepository;
 
-    public List<String> getRecommendByUser(int userId) {
+
+    public List<RecommendationResponseDto> getRecommendByUser(Long userId) {
         List<String> recommendations = new ArrayList<>();
+        List<RecommendationResponseDto> response = new ArrayList<>();
         List<Favorite> favorites = favoriteRepository.findByUserId(userId);
         if (favorites.isEmpty()){
-            return recommendations;
+            return response;
         }
         else {
-            Random random = new Random();
-            int randomIndex = random.nextInt(favorites.size());
-            Favorite favorite = favorites.get(randomIndex);
+            Favorite favorite=getRandomFavorite(favorites);
             Store store = favorite.getStore();
             String region = store.getRegion();
-            String name = store.getName();
-            String category = store.getCategory();
-            String tags = "[[재료가 신선해요], [친절해요], [가성비가 좋아요], [매장이 넓어요]]";
+            String category = store.getCategory().getKoreanName();
+            String tags = store.getTop5Tags();
+            System.out.println(category+store+region+tags);
+
             try {
-                // ProcessBuilder로 Python 스크립트 실행 설정
-                ProcessBuilder processBuilder = new ProcessBuilder("python", "C:\\Users\\82107\\Desktop\\Alddeul_Babsang-Server\\src\\main\\resources\\recommend.py", category, tags, region);
+
+                ProcessBuilder processBuilder = new ProcessBuilder(
+                        "python","C:/Users/82107/Desktop/Alddeul_Babsang-Server/src/main/resources/recommend.py",
+                        category,
+                        tags,
+                        region
+                );
                 Process process = processBuilder.start();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-                String line;
-                while (true) {
-                    try {
-                        if (!((line = reader.readLine()) != null)) break;
-                    } catch (IOException ex) {
-                        throw new RuntimeException(ex);
+                try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        recommendations.add(line);  // Add each line to recommendations list
                     }
-                    recommendations.add(line);  // 추천 가게 이름을 리스트에 추가
                 }
-                try {
-                    process.waitFor();
-                } catch (InterruptedException ex) {
-                    throw new RuntimeException(ex);
-                }
-                // 추천 가게 목록을 반환
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+                process.waitFor();
+
+            } catch (IOException | InterruptedException e) {
+                throw new RuntimeException("Failed to execute recommendation script", e);
             }
-            return recommendations;
         }
-    }
+        System.out.println(recommendations);
+        List<Store> recommendStores = storeRepository.findByNameIn(recommendations);
+        response = recommendStores.stream()
+                .map(store -> new RecommendationResponseDto(
+                        store.getName(),
+                        store.getCategory(),
+                        store.getRegion()
+                ))
+                .collect(Collectors.toList());
+
+        return  response;
 }
+        private Favorite getRandomFavorite(List<Favorite> favorites){
+        Random random = new Random();
+        int randomIndex = random.nextInt(favorites.size());
+        return favorites.get(randomIndex);
+    }
+
+
+
+    }
+
