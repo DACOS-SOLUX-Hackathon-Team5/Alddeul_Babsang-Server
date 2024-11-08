@@ -1,5 +1,6 @@
 package com.example.alddeul_babsang.service;
 
+import com.example.alddeul_babsang.web.dto.FavoriteResponseDto;
 import com.example.alddeul_babsang.web.dto.FavoriteStoreDetailDto;
 import com.example.alddeul_babsang.config.VWorldConfig;
 import com.example.alddeul_babsang.converter.MapConverter;
@@ -87,7 +88,7 @@ public class CoordinatesService {
         }
 
 
-        public List<FavoriteStoreDetailDto> getFavoritesByUser(long userId) {
+        public FavoriteResponseDto getFavoritesByUser(long userId) {
             User user=findUserById(userId);
             List<Favorite> favorites = favoriteRepository.findByUserId(user.getId());
             List<FavoriteStoreDetailDto> favoriteStoresDetails = favorites.stream()
@@ -101,7 +102,8 @@ public class CoordinatesService {
                             true
                     ))
                     .collect(Collectors.toList());
-            return  favoriteStoresDetails;
+            FavoriteResponseDto favoriteResponseDto =new FavoriteResponseDto(favoriteStoresDetails);
+            return  favoriteResponseDto;
         }
 
 
