@@ -1,28 +1,17 @@
 package com.example.alddeul_babsang.service;
 
-import com.example.alddeul_babsang.web.dto.FavoriteStoreDetailDto;
 import com.example.alddeul_babsang.config.VWorldConfig;
 import com.example.alddeul_babsang.converter.MapConverter;
-import com.example.alddeul_babsang.entity.Favorite;
-import com.example.alddeul_babsang.entity.Store;
-import com.example.alddeul_babsang.entity.User;
-import com.example.alddeul_babsang.repository.FavoriteRepository;
-import com.example.alddeul_babsang.repository.StoreRepository;
-import com.example.alddeul_babsang.repository.UserRepository;
 import com.example.alddeul_babsang.web.dto.StoreDTO;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.PathNotFoundException;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
