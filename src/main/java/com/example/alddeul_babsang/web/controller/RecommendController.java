@@ -19,4 +19,10 @@ public class RecommendController {
         List<RecommendationResponseDto> recommendationStores = recommendService.getRecommendByUser(userId);
         return ApiResponse.onSuccess(recommendationStores);
     }
+    @PostMapping("/similar")
+    public ApiResponse<List<RecommendationResponseDto>> geNearestRecommendation(@RequestParam Long storeId) {
+        List<RecommendationResponseDto> recommendationStores = recommendService.getRecommendNearestStore(storeId);
+        return ApiResponse.onSuccess(recommendationStores);
+    }
+
 }
