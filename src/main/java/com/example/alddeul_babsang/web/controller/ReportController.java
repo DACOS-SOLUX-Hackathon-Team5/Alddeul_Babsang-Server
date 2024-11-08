@@ -20,7 +20,6 @@ import java.util.Map;
 public class ReportController {
 
     private final StoreService storeService;
-    private final CoordinatesService coordinatesService;
 
     // 제보된 업소 조회
     @PostMapping("/")
@@ -31,6 +30,7 @@ public class ReportController {
     }
 
     // 업소 제보 등록
+    // StoreDTO.StoreReport report
     @Operation(summary = "업소 제보 등록 API", description = "업소를 제보합니다. 바로 착한 업소 등록 x")
     @PostMapping(value="/post", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponse<String> postStore(@RequestPart StoreDTO.StoreReport report) {

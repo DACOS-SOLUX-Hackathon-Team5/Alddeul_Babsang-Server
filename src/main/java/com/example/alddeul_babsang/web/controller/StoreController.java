@@ -23,6 +23,8 @@ public class StoreController {
     @PostMapping("/")
     @Operation(summary = "업소 리스트 API", description = "착한 업소만 조회합니다.")
     public ApiResponse<List<StoreDTO.StoreInfo>> getStores(@RequestParam Long userId) {
+        System.out.println("컨틀로러 단의 userId 여부: " + userId);
+
         // Status.Good: 착한 업소
         return ApiResponse.onSuccess(storeService.getStoreList(Status.GOOD, userId));
     }

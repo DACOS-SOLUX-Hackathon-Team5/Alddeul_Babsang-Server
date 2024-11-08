@@ -5,6 +5,7 @@ import com.example.alddeul_babsang.service.ReviewService;
 import com.example.alddeul_babsang.web.dto.ReviewResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,7 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class ReviewController {
     @Autowired
     private final  ReviewService reviewService;
-    @PostMapping("/{storeId}")
+    @PostMapping(value="/{storeId}", consumes =MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponse<ReviewResponseDto> createReview(@PathVariable int storeId,
                                                        @RequestParam int userId,
                                                        @RequestParam float rating,

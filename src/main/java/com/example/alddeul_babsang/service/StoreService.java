@@ -32,6 +32,8 @@ public class StoreService {
 
     // 업소 리스트 조회
     public List<StoreDTO.StoreInfo> getStoreList(Status status, Long userId) {
+        System.out.println("서비스 단의 userId 여부: " + userId);
+
         // 업소 status에 따라 처리
         List<Store> stores = storeRepository.findAllByStatus(status);
 
@@ -43,6 +45,8 @@ public class StoreService {
         return stores.stream()
                 .map(store -> {
                     boolean isFavorite = favoriteRepository.existsByUserIdAndStoreId(userId, store.getId());
+                    System.out.println("서비스 단의 isFavorite 여부: " + isFavorite);
+
                     return StoreConverter.toStoreInfo(store, isFavorite);
                 })
                 .collect(Collectors.toList());
