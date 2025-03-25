@@ -3,7 +3,7 @@ package com.example.alddeul_babsang.entity;
 import com.example.alddeul_babsang.entity.enums.Status;
 import com.example.alddeul_babsang.entity.enums.Category;
 import jakarta.persistence.*;
-import lombok.Getter;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
@@ -12,14 +12,22 @@ import java.util.List;
 
 @Entity
 @Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Store {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Long realId;
+
     private String name;
 
     private String address;
+
+    private String region;
 
     private double latitude;
 
@@ -40,11 +48,18 @@ public class Store {
     @CreatedDate
     private LocalDateTime createdAt;
 
+    // 추가된 필드들
+    private String top5Tags;
+    private Integer cluster1;
+    private Integer cluster2;
+    private String menu1;
+    private String menu2;
+
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
     private List<Review> reviewList = new ArrayList<>();
 
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
-    private List<Like> likeList = new ArrayList<>();
+    private List<Favorite> favoriteList = new ArrayList<>();
 
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
     private List<Report> reportList = new ArrayList<>();
