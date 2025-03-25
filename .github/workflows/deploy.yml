@@ -10,9 +10,9 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4  # 저장소 코드 체크아웃
+        uses: actions/checkout@v4
 
-      - name: Set up JDK 17  # Java 개발 킷 설정
+      - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
@@ -33,7 +33,7 @@ jobs:
           arguments: build
 
       - name: Upload build artifact  # 빌드된 아티팩트 업로드
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: babsang-server
           path: build/libs/*.jar
