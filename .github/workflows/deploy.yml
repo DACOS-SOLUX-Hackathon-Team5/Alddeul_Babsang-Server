@@ -2,14 +2,14 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [ develop ] # develop 브랜치 머지 경우 실행
+    branches: [ develop, cicd-pipeline] # develop 브랜치 머지 경우 실행
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name:  Checkout repository
+      - name: Checkout repository
         uses: actions/checkout@v4  # 저장소 코드 체크아웃
 
       - name: Set up JDK 17  # Java 개발 킷 설정
