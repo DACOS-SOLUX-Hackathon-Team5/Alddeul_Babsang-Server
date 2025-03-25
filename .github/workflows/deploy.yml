@@ -28,12 +28,12 @@ jobs:
       - name: Grant execute permission for gradlew  # gradlew 실행 권한 부여
         run: chmod +x gradlew
 
-      - name: Build with Gradle  # Gradle을 사용하여 프로젝트 빌드
+      - name: Build with Gradle
         uses: gradle/gradle-build-action@v2
         with:
           arguments: build -x test
 
-      - name: Upload build artifact  # 빌드된 아티팩트 업로드
+      - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
           name: babsang-server
@@ -44,8 +44,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Download build artifact  # 이전 단계에서 업로드한 아티팩트 다운로드
-        uses: actions/download-artifact@v3
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
         with:
           name: babsang-server
           path: build/libs/
