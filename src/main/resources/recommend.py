@@ -3,6 +3,8 @@ import sys
 import random
 import ast
 import json
+import pymysql
+
 
 #스프링에 json으로 표준 입력 받기
 sys.stdout.reconfigure(encoding='utf-8')
@@ -82,7 +84,7 @@ def get_similar_stores(df_recommended, liked_categories, liked_tags, liked_gus):
        random_stores = random.sample(similar_stores, 4)  # 랜덤으로 4개 선택
        return random_stores
      else: # 4개 안되면 나머지는 랜덤 출력, 좋아요 누른 가게가 적은 경우 -> 완전히 새로운 랜덤한 가게 출력
-       remaining_stores = df_recommended['업소명'].tolist()
+       remaining_stores = df_recommended['업소아이디'].tolist()
        remaining_stores = [store for store in remaining_stores if store not in similar_stores]  # 이미 추천된 가게는 제외
        random_stores = random.sample(remaining_stores, 4 - len(similar_stores))  # 부족한 만큼 랜덤으로 추가
        similar_stores.extend(random_stores)
@@ -97,7 +99,6 @@ except Exception as e:
     print("에러 메시지:", str(e), flush=True)
 
 
-#
 #  유사한 가게들 추천
 recommended = get_similar_stores(df_recommended, liked_categories, liked_tags, liked_gus)
 # #출력 통해 스프링으로 전달

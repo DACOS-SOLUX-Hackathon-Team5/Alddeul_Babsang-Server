@@ -2,7 +2,6 @@ package com.example.alddeul_babsang.web.controller;
 
 import com.example.alddeul_babsang.apiPayload.ApiResponse;
 import com.example.alddeul_babsang.service.RecommendService;
-import com.example.alddeul_babsang.web.dto.RecommendRequestDto;
 import com.example.alddeul_babsang.web.dto.RecommendationResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

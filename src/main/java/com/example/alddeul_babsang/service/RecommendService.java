@@ -7,8 +7,10 @@ import com.example.alddeul_babsang.entity.Store;
 import com.example.alddeul_babsang.entity.enums.Status;
 import com.example.alddeul_babsang.repository.FavoriteRepository;
 import com.example.alddeul_babsang.repository.StoreRepository;
+import com.example.alddeul_babsang.web.dto.GeoRequestDto;
 import com.example.alddeul_babsang.web.dto.RecommendationResponseDto;
 import com.example.alddeul_babsang.web.dto.StoreForRecommendationDto;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -36,62 +39,59 @@ public class RecommendService {
     public List<RecommendationResponseDto> getRecommendNearestStore(Long storeId) {
         Store currentStore = storeRepository.findById(storeId)
             .orElseThrow(() -> new TempHandler(ErrorStatus.STORE_ERROR_ID));
-        // 결과 리스트 선언
-        List<RecommendationResponseDto> response = new ArrayList<>();
+        List<Integer> result = new ArrayList<>();
 
+        System.out.println(currentStore.getName());
         // Store의 Status 확인
         if (currentStore.getStatus() == Status.PREGOOD) {
-            // Status가 PREGOOD이면 빈 리스트 반환
-            return response;
+            // Status가 PREGOOD이면 완전 빈 불변 리스트 반환
+            return Collections.emptyList();
         }
 
-        // Status가 GOOD일 경우 진행
-        int clusterId = (currentStore.getCluster2() != null) ? currentStore.getCluster2() : 1; // null이면 1로 설정
-        double latitude = currentStore.getLatitude();
-        double longitude = currentStore.getLongitude();
-
-
-        // 추천 결과 저장할 리스트 선언
-        List<String> recommendations = new ArrayList<>();
-
-        String[] command = {
-            "python",
-            "src/main/resources/from_geopy.py",  // Python 스크립트 경로
-            String.valueOf(latitude), // 위도
-            String.valueOf(longitude), // 경도
-            String.valueOf(clusterId), // 클러스터 ID
-            String.valueOf(storeId)
-        };
+        GeoRequestDto geoDto = new GeoRequestDto(
+            currentStore.getLatitude(),
+            currentStore.getLongitude(),
+            currentStore.getCluster2() != null ? currentStore.getCluster2() : 1,
+            currentStore.getRealId()
+        );
 
         try {
-            ProcessBuilder processBuilder = new ProcessBuilder(command);
-            Process process = processBuilder.start();
+            ObjectMapper mapper = new ObjectMapper();
+            String jsonData = mapper.writeValueAsString(geoDto);
+            System.out.println(jsonData);
 
-            //결과값 읽기
-            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            String line;
-            while ((line = reader.readLine()) != null) {
-                System.out.println(line);
-                recommendations.add(line); // Python 스크립트의 출력 수집
+            ProcessBuilder builder = new ProcessBuilder("python", "src/main/resources/from_geopy.py");
+            Process process = builder.start();
+
+            // JSON 전송
+            try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(process.getOutputStream(), StandardCharsets.UTF_8))) {
+                writer.write(jsonData);
+                writer.flush();
             }
 
-            BufferedReader errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream(), StandardCharsets.UTF_8));
-            String errorLine;
-            while ((errorLine = errorReader.readLine()) != null) {
-                System.err.println("[Python 에러] " + errorLine);
+            // 결과 읽기
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream(), StandardCharsets.UTF_8))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    System.out.println(line);
+                    if (line.startsWith("[")) {
+                        result = mapper.readValue(line, new TypeReference<List<Integer>>() {});
+                    }
+                }
             }
 
             process.waitFor();
 
-
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("Error executing Python script", e);
+            throw new RuntimeException("파이썬 추천 실행 중 오류 발생", e);
         }
 
-        System.out.println(recommendations);
-        List<Store> recommendStores = storeRepository.findByNameIn(recommendations);
-        response = recommendStores.stream()
+
+        // 6. DB에서 realId 기준으로 Store 찾기
+        List<Store> stores = storeRepository.findByRealIdIn(result);
+
+        // 7. DTO로 변환해서 반환
+        return stores.stream()
             .map(store -> new RecommendationResponseDto(
                 store.getName(),
                 store.getCategory(),
@@ -99,7 +99,6 @@ public class RecommendService {
                 store.getId()
             ))
             .collect(Collectors.toList());
-        return response;
     }
 
 
@@ -111,9 +110,9 @@ public class RecommendService {
 
         List<StoreForRecommendationDto> storeDtos = convertFavoritesToDtos(favorites);
         String jsonData = convertToJson(storeDtos);
-        List<String> recommendedStoreNames = callPythonAndParseResult(jsonData);
+        List<String> recommendedStoreIds = callPythonAndParseResult(jsonData);
 
-        return convertStoreNamesToResponse(recommendedStoreNames);
+        return convertStoreIdsToResponse(recommendedStoreIds);
     }
 
     //좋아요 누른 것둘을 추천을 위한 dto리스트로 만드는 메소드
@@ -181,23 +180,29 @@ public class RecommendService {
         }
         return result;
     }
-    private List<RecommendationResponseDto> convertStoreNamesToResponse(List<String> storeNames) {
+    private List<RecommendationResponseDto> convertStoreIdsToResponse(List<String> storeIds) {
         List<RecommendationResponseDto> result = new ArrayList<>();
-        for (String name : storeNames) {
-            //중복인 경우를 고려, 리스트로 찾기
-            List<Store> stores = storeRepository.findAllByName(name);
-            if (!stores.isEmpty()) {
-                Store store = stores.get(0); //첫번째만 사용하기
-                result.add(new RecommendationResponseDto(
-                    store.getName(),
-                    store.getCategory(),
-                    store.getRegion(),
-                    store.getId()
-                ));
+
+        for (String realIdStr : storeIds) {
+            try {
+                int realId = Integer.parseInt(realIdStr); // 파이썬에서 받은 id는 문자열이므로 정수로 변환
+                Store store = storeRepository.findByRealId(realId);
+                if (store != null) {
+                    result.add(new RecommendationResponseDto(
+                        store.getName(),
+                        store.getCategory(),
+                        store.getRegion(),
+                        store.getId()
+                    ));
+                }
+            } catch (NumberFormatException e) {
+                System.err.println("잘못된 ID 형식: " + realIdStr);
             }
         }
+
         return result;
     }
+
 
 
 
