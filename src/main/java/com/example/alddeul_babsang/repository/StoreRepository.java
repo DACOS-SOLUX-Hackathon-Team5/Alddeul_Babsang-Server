@@ -13,4 +13,6 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
     List<Store> findByNameIn(List<String> names);
     List<Store> findAllByStatus(Status status);
     List<Store> findByCluster2(Integer cluster2);
+
+	List<Store> findAllByName(String storeName);
 }

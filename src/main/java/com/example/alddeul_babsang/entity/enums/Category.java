@@ -14,4 +14,15 @@ public enum Category {
 
     public String getKoreanName() {
         return koreanName;
-    }}
+    }
+
+    public static Category fromKorean(String name) {
+        for (Category c : values()) {
+            if (c.koreanName.equals(name)) {
+                return c;
+            }
+        }
+        return OTHER; // 매칭 안 되면 기본값
+    }
+
+}

@@ -14,13 +14,17 @@ import java.util.List;
 @RestController
 public class RecommendController {
     private final RecommendService recommendService;
-    @PostMapping
-    public ApiResponse<List<RecommendationResponseDto>> getRecommendation(@RequestParam Long userId) {
+
+    //가게 추천
+    @GetMapping("/preference/{userId}")
+    public ApiResponse<List<RecommendationResponseDto>> getRecommendation(@PathVariable Long userId) {
         List<RecommendationResponseDto> recommendationStores = recommendService.getRecommendByUser(userId);
         return ApiResponse.onSuccess(recommendationStores);
     }
-    @PostMapping("/similar")
-    public ApiResponse<List<RecommendationResponseDto>> geNearestRecommendation(@RequestParam Long storeId) {
+
+    //가까운 가게 추천
+    @GetMapping("/nearby/{storeId}")
+    public ApiResponse<List<RecommendationResponseDto>> geNearestRecommendation(@PathVariable Long storeId) {
         List<RecommendationResponseDto> recommendationStores = recommendService.getRecommendNearestStore(storeId);
         return ApiResponse.onSuccess(recommendationStores);
     }
