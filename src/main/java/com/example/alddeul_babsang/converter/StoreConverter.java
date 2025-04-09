@@ -19,7 +19,7 @@ public class StoreConverter {
         return StoreDTO.MapStore.builder()
                 .storeId(store.getId())
                 .name(store.getName())
-                .category(store.getCategory())
+               // .category(store.getCategory())
                 .address(store.getAddress())
                 .region(store.getRegion())
                 .latitude(store.getLatitude())
@@ -46,7 +46,7 @@ public class StoreConverter {
         return StoreDTO.StoreInfo.builder()
                 .storeId(store.getId())
                 .name(store.getName())
-                .category(store.getCategory())
+              //  .category(store.getCategory())
                 .address(store.getAddress())
                 .contact(store.getContact())
                 .imageUrl(store.getThumnail())
@@ -60,14 +60,9 @@ public class StoreConverter {
         StoreDTO.StoreInfo storeInfo = toStoreInfo(store, favorite);
 
         // 메뉴 정보
-        StoreDTO.MenuInfo menu1 = toMenuInfo(menu.getName1(), menu.getPrice1());
-        StoreDTO.MenuInfo menu2 = toMenuInfo(menu.getName2(), menu.getPrice2());
-
         return StoreDTO.StoreDetail.builder()
                 .storeInfo(storeInfo)
                 .aveRating(rating)
-                .menu1(menu1)
-                .menu2(menu2)
                 .build();
     }
 
@@ -102,7 +97,7 @@ public class StoreConverter {
         Store storeEntity = new Store();
 
         storeEntity.setName(report.getName());
-        storeEntity.setCategory(report.getCategory());
+//        storeEntity.setCategory(report.getCategory());
         storeEntity.setAddress(report.getAddress());
         storeEntity.setRegion((extractRegion(report.getAddress())));
         storeEntity.setContact(report.getContact());
@@ -118,10 +113,7 @@ public class StoreConverter {
     public static Menu toMenuEntity(StoreDTO.StoreReport report) {
         // Menu 객체 생성 시 기본값을 제공하여 유효한 객체를 항상 반환
         Menu menu = new Menu();
-        menu.setName1(report.getMenuName1() != null ? report.getMenuName1() : "메뉴 없음");
-        menu.setPrice1(report.getMenuPrice1() != null ? report.getMenuPrice1() : 0);
-        menu.setName2(report.getMenuName2() != null ? report.getMenuName2() : "메뉴 없음"); // 기본값 ""
-        menu.setPrice2(report.getMenuPrice2() != null ? report.getMenuPrice2() : 0); // 기본값 0
+
         return menu;
     }
 }

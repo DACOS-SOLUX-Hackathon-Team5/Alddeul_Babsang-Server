@@ -1,13 +1,8 @@
 package com.example.alddeul_babsang.web.dto;
 
-import com.example.alddeul_babsang.entity.enums.Category;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class StoreDTO {
@@ -17,7 +12,6 @@ public class StoreDTO {
     public static class MapStore {
         private final Long storeId; // 업소 아이디
         private final String name;  // 업소 이름
-        private final Category category; // 업종
         private final String address;    // 주소
         private final String region;     // 구
         private final double latitude;   // 위도
@@ -30,7 +24,6 @@ public class StoreDTO {
     public static class StoreInfo {
         private final Long storeId; // 업소 아이디
         private final String name;       // 업소 이름
-        private final Category category; // 업종
         private final String address;    // 주소
         private final String contact;    // 연락처
         private final String imageUrl;   // 이미지 주소
@@ -60,7 +53,6 @@ public class StoreDTO {
     @Builder
     public static class StoreReport {
         private final String name;       // 업소 이름
-        private final Category category; // 업종
         private final String address;    // 주소
         private final String contact;    // 연락처
         private final String menuName1;  // 대표메뉴1

@@ -39,7 +39,7 @@ public class FavoriteService {
                 .map(favorite -> new FavoriteStoreDetailDto(
                         favorite.getStore().getId(),
                         favorite.getStore().getName(),
-                        favorite.getStore().getCategory(),
+                    //    favorite.getStore().getCategory(),
                         favorite.getStore().getAddress(),
                         favorite.getStore().getContact(),
                         favorite.getStore().getThumnail(),

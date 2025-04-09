@@ -42,10 +42,10 @@ public class RecommendService {
         }
 
         // Status가 GOOD일 경우 진행
-        int clusterId = (currentStore.getCluster2() != null) ? currentStore.getCluster2() : 1; // null이면 1로 설정
+     //   int clusterId = (currentStore.getCluster2() != null) ? currentStore.getCluster2() : 1; // null이면 1로 설정
         double latitude = currentStore.getLatitude();
         double longitude = currentStore.getLongitude();
-        System.out.println(clusterId + "+++++++++++++++++++");
+    //    System.out.println(clusterId + "+++++++++++++++++++");
         System.out.println(latitude);
         System.out.println(longitude);
 
@@ -57,7 +57,7 @@ public class RecommendService {
                 "src/main/resources/from_geopy.py",  // Python 스크립트 경로
                 String.valueOf(latitude), // 위도
                 String.valueOf(longitude), // 경도
-                String.valueOf(clusterId), // 클러스터 ID
+             //   String.valueOf(clusterId), // 클러스터 ID
                 String.valueOf(storeId)
         };
 
@@ -81,7 +81,7 @@ public class RecommendService {
         response = recommendStores.stream()
                 .map(store -> new RecommendationResponseDto(
                         store.getName(),
-                        store.getCategory(),
+                      //  store.getCategory(),
                         store.getRegion(),
                         store.getId()
                 ))
@@ -101,15 +101,15 @@ public class RecommendService {
             Favorite favorite=getRandomFavorite(favorites);
             Store store = favorite.getStore();
             String region = store.getRegion();
-            String category = store.getCategory().getKoreanName();
-            String tags = store.getTop5Tags();
-            System.out.println(category+store+region+tags);
+           // String category = store.getCategory().getKoreanName();
+ //           String tags = store.getTop5Tags();
+       //     System.out.println(category+store+region+tags);
 
             try {
                 ProcessBuilder processBuilder = new ProcessBuilder(
                         "python","src/main/resources/recommend.py",
-                        category,
-                        tags,
+                  //      category,
+              //          tags,
                         region
                 );
                 Process process = processBuilder.start();
@@ -130,7 +130,7 @@ public class RecommendService {
         response = recommendStores.stream()
                 .map(store -> new RecommendationResponseDto(
                         store.getName(),
-                        store.getCategory(),
+                //        store.getCategory(),
                         store.getRegion(),
                         store.getId()
                 ))

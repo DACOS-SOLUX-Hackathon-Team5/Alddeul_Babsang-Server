@@ -1,5 +1,6 @@
 package com.example.alddeul_babsang.entity;
 
+import com.example.alddeul_babsang.entity.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,13 +13,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Entity
-public class Favorite {
+public class Favorite extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long report_id;
-
-    @CreatedDate
-    private LocalDateTime createdAt;
 
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="user_id")
@@ -31,6 +29,5 @@ public class Favorite {
     public Favorite(User user, Store store) {
         this.user = user;
         this.store = store;
-        this.createdAt = LocalDateTime.now();
     }
 }

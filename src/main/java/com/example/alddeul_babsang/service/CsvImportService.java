@@ -2,7 +2,6 @@ package com.example.alddeul_babsang.service;
 
 import com.example.alddeul_babsang.entity.Menu;
 import com.example.alddeul_babsang.entity.Store;
-import com.example.alddeul_babsang.entity.enums.Category;
 import com.example.alddeul_babsang.entity.enums.Status;
 import com.example.alddeul_babsang.repository.MenuRepository;
 import com.example.alddeul_babsang.repository.StoreRepository;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.time.LocalDateTime;
@@ -38,7 +36,6 @@ public class CsvImportService {
                 // Store 데이터 설정
                 Long id = Long.parseLong(nextLine[2]);
                 String name = nextLine[3].trim();
-                Category category = mapCategory(parseInt(nextLine[4].trim())); // 분류코드명 매핑
                 String address = nextLine[6].trim();
                 String contact = nextLine[7].trim();
                 String region = nextLine[8].trim();
@@ -51,20 +48,16 @@ public class CsvImportService {
                 LocalDateTime createdAt = LocalDateTime.now();
 
                 Store store = new Store();
-                store.setRealId(id);
                 store.setName(name);
                 store.setAddress(address);
                 store.setRegion(region);
                 store.setLatitude(latitude);
                 store.setLongitude(longitude);
                 store.setContact(contact);
-                store.setCluster1(cluster);
-                store.setCluster2(cluster2);
-                store.setTop5Tags(tag);
+               // store.setCluster1(cluster);
+                //store.setCluster2(cluster2);
+                //store.setTop5Tags(tag);
                 store.setStatus(status);
-                store.setCategory(category);
-                store.setCreatedAt(createdAt);
-
                 storeRepository.save(store); // Store 데이터베이스에 저장
 
                 // Menu 데이터 설정
@@ -92,11 +85,6 @@ public class CsvImportService {
                 }
 
                 Menu menu = new Menu();
-                menu.setName1(name1);
-                menu.setPrice1(price1);
-                menu.setName2(name2);
-                menu.setPrice2(price2);
-                menu.setCreatedAt(createdAt);
                 menu.setStore(store);  // store와 menu 관계 설정
 
                 menuRepository.save(menu); // Menu 데이터베이스에 저장
@@ -105,16 +93,4 @@ public class CsvImportService {
 
     }
 
-    private Category mapCategory(int categoryCode) {
-        switch (categoryCode) {
-            case 1:
-                return Category.KOREAN;
-            case 2:
-                return Category.CHINESE;
-            case 3:
-                return Category.WESTERN_JAPANESE;
-            default:
-                return Category.OTHER;
-        }
-    }
 }
