@@ -2,7 +2,7 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [ main ] # main 브랜치 머지 경우 진행
+    branches: [  ] # main 브랜치 머지 경우 진행
 
 jobs:
   build:
