@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController("/test")
 @RequiredArgsConstructor
-public class TempComtroller {
+public class TestController {
 
     private final CoordinatesService coordinatesService;
 
