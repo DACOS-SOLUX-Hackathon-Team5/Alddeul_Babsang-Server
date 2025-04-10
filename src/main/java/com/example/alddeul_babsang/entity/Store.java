@@ -1,5 +1,6 @@
 package com.example.alddeul_babsang.entity;
 
+import com.example.alddeul_babsang.entity.common.BaseEntity;
 import com.example.alddeul_babsang.entity.enums.Status;
 import jakarta.persistence.*;
 import lombok.*;
@@ -15,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Store {
+public class Store extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
