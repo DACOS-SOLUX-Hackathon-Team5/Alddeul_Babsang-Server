@@ -30,16 +30,3 @@ public class ApiResponse<T> {
         return new ApiResponse<>(false, code, message, data);
     }
 }
-
-// 응답 형태
-/*
-{
-	"isSuccess ": true,
-	"code" : "2000",
-	"message" : "OK",
-	"result" :
-		{
-			"testString" : "This is test!"
-		}
-}
- */
