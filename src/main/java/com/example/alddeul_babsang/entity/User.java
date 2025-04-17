@@ -1,5 +1,6 @@
 package com.example.alddeul_babsang.entity;
 
+import com.example.alddeul_babsang.entity.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
@@ -10,7 +11,7 @@ import java.util.List;
 
 @Getter
 @Entity
-public class User {
+public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,9 +23,6 @@ public class User {
     private String nickname;
 
     private String image;
-
-    @CreatedDate
-    private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Review> reviewList = new ArrayList<>();

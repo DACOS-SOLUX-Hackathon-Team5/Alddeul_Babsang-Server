@@ -71,8 +71,8 @@ public class StoreService {
         boolean isFavorite = favoriteRepository.existsByUserIdAndStoreId(userId, storeId);
 
          // store 메뉴 조회
-        Menu menu = store.getMenu();
-        return StoreConverter.toStoreDetail(store, menu, isFavorite, rating);
+      //  Menu menu = store.getMenu();
+        return StoreConverter.toStoreDetail(store, null, isFavorite, rating);
     }
 
     // 업소 리뷰 조회

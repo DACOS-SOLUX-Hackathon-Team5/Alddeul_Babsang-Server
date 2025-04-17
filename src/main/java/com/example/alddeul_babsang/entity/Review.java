@@ -1,5 +1,6 @@
 package com.example.alddeul_babsang.entity;
 
+import com.example.alddeul_babsang.entity.common.BaseEntity;
 import jakarta.persistence.*;
 
 import lombok.Getter;
@@ -15,7 +16,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 @Getter
-public class Review {
+public class Review extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,9 +26,6 @@ public class Review {
     private float star_rating;
 
     private String image;
-
-    @CreatedDate
-    private LocalDateTime createdAt;
 
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="user_id")

@@ -19,7 +19,9 @@ public class SwaggerConfig {
     private Info apiInfo() {
         return new Info()
                 .title("알뜰 밥상 in 서울")
-                .description("알뜰 밥상 in 서울 - api 명세서")
+                .description("알뜰 밥상 in 서울 api 명세서입니다.<br>" +
+                        "<b>오류 및 문의사항은</b> <a> https://github.com/DACOS-SOLUX-Hackathon-Team5/Alddeul_Babsang-Server</a>에" +
+                        " <b>\"[bug]~~\" 이름</b>으로 이슈 남겨주세요. ")
                 .version("1.0.0");
     }
 }

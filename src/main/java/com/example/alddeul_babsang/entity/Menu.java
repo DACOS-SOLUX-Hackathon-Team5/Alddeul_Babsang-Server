@@ -1,5 +1,6 @@
 package com.example.alddeul_babsang.entity;
 
+import com.example.alddeul_babsang.entity.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,21 +11,16 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
-public class Menu {
+public class Menu extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name1;
-    private int price1;
+    private String name;
 
-    private String name2;
-    private int price2;
+    private Integer price;
 
-    @CreatedDate
-    private LocalDateTime createdAt;
-
-    @OneToOne
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "store_id")
     private Store store;
 }
